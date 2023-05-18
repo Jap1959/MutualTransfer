@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1069188669732",
+    "project_id": "connect2prof",
+    "storage_bucket": "connect2prof.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1069188669732:android:bda51f218a9ede01f013b1",
+        "android_client_info": {
+          "package_name": "com.det.MutualTransfer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1069188669732-4iqds23c3ksl2f7m4ku03tu6bjq0fq0h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB4QFu8M8lF6Rak_vZVFSHN4rAxs7787mc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1069188669732-16v6tcpa06qk8crvj91iip3rksnv0ra7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
