@@ -3,31 +3,32 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class TextfieldApp extends StatefulWidget {
-  TextfieldApp({required this.Email,required this.HintText, this.icon,required this.color});
-   TextEditingController Email=TextEditingController();
-   String HintText;
-   IconData? icon;
-   Color color;
+class TextfieldArea extends StatefulWidget {
+  TextfieldArea({required this.Email,required this.HintText, this.icon,required this.color});
+  TextEditingController Email=TextEditingController();
+  String HintText;
+  IconData? icon;
+  Color color;
 
   @override
-  State<TextfieldApp> createState() => _TextfieldAppState();
+  State<TextfieldArea> createState() => _TextfieldAreaState();
 }
 
-class _TextfieldAppState extends State<TextfieldApp> {
+class _TextfieldAreaState extends State<TextfieldArea> {
 
 
   @override
   Widget build(BuildContext context) {
     return  Container(
       width: 550,
-      height: 50,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
         color: widget.color,
       ),
       child: TextFormField(
         controller: widget.Email,
+        maxLines: 15,
+        keyboardType: TextInputType.multiline,
         cursorColor: Colors.black,
         enableSuggestions: true,
         decoration: InputDecoration(

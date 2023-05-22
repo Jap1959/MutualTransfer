@@ -54,7 +54,7 @@ class Authentication {
     }
   }
 
-  Future<User?> signInWithEmailAndPassword(
+  Future<Object?> signInWithEmailAndPassword(
       String email, String password) async {
     try {
       final UserCredential userCredential =
@@ -64,8 +64,7 @@ class Authentication {
       );
       return userCredential.user;
     } catch (e) {
-      print('Sign-in error: $e');
-      return null;
+      return e.toString();
     }
   }
 

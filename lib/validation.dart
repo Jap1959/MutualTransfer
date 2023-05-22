@@ -16,4 +16,22 @@ class validationOfForm{
      }
      return 'true';
    }
+   String ValidatePost(String Proffession,String CurrentLocation,String RequiredLocation,String Description,String Name){
+     if(Proffession.length==0){
+       return 'Enter your Proffession';
+     }
+     if(Name.length==0){
+       return 'Enter your Name';
+     }
+     if(Description.length<200){
+       return 'Minimum 100 words';
+     }
+     if(CurrentLocation.length==0){
+       return "Enter your CuurentLocation";
+     }
+     if(RequiredLocation.length==0){
+       return "Enter your RequiredLocation";
+     }
+     return 'true';
+   }
 }

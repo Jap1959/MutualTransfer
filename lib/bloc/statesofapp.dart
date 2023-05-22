@@ -2,6 +2,7 @@
 
 
 import 'package:connect2prof/authentication/auth.dart';
+import 'package:connect2prof/usermodel/PostdataModel.dart';
 import 'package:connect2prof/usermodel/usermodel.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -18,7 +19,7 @@ class WelcomeState extends AppStates{
 class PageLoadedstate extends AppStates{
   PageLoadedstate(this.Data);
 
-  final List<UserDatamodel> Data;
+  final List<PostdataModel> Data;
   @override
   List<Object?> get props=> [Data];
 }
@@ -41,4 +42,36 @@ class DataUploadedState extends AppStates {
   @override
   List<Object?> get props => [];
 
+}
+class LoginSucessState extends AppStates {
+  @override
+  List<Object?> get props => [];
+
+}
+class ButtonPressedState extends AppStates {
+  @override
+  List<Object?> get props => [];
+
+}
+class ButtonNotPressedState extends AppStates {
+  @override
+  List<Object?> get props => [];
+
+}
+class LoginUnsucessfullState extends AppStates{
+  final String Error;
+  LoginUnsucessfullState(this.Error);
+  @override
+  List<Object?> get props => [Error];
+
+}
+class UploadStartState extends AppStates{
+  @override
+  List<Object?> get props => [];
+}
+class UploadCompleted extends AppStates{
+  UploadCompleted(this.url);
+  final String url;
+  @override
+  List<Object?> get props => [url];
 }

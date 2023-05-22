@@ -82,7 +82,7 @@ bool Notificationoff=false;
                                 Authentication _auth=Authentication();
                                 _auth.signOut();
                                 Get.offAll(()=>WelcomeScrenn());
-_                              },
+                              },
                                 child: ButtonAPP(Name: 'Log Out',iconpre:Icons.exit_to_app_outlined ,)),
                           ) :Container(
                               width: 1000,
@@ -96,9 +96,30 @@ _                              },
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                   Image(image: NetworkImage(icons[index])),
-                                    Text(
-                                      items[index],
-                                      style: TextStyle(fontSize: 20, color: Colors.black, fontFamily: 'MonoRoboto'),
+                                    index==0?Padding(
+                                      padding: const EdgeInsets.fromLTRB(0.0  , 0.0 , 150, 0.0),
+                                      child: Text(
+                                        items[index],
+                                        style: TextStyle(fontSize: 20, color: Colors.black, fontFamily: 'MonoRoboto'),
+                                      ),
+                                    ):index==1?Padding(
+                                      padding: const EdgeInsets.fromLTRB(0.0  , 0.0 , 120, 0.0),
+                                      child: Text(
+                                        items[index],
+                                        style: TextStyle(fontSize: 20, color: Colors.black, fontFamily: 'MonoRoboto'),
+                                      ),
+                                    ):index==2?Padding(
+                                      padding: const EdgeInsets.fromLTRB(0.0  , 0.0 , 100, 0.0),
+                                      child: Text(
+                                        items[index],
+                                        style: TextStyle(fontSize: 20, color: Colors.black, fontFamily: 'MonoRoboto'),
+                                      ),
+                                    ):Padding(
+                                      padding: const EdgeInsets.fromLTRB(0.0  , 0.0 , 200, 0.0),
+                                      child: Text(
+                                        items[index],
+                                        style: TextStyle(fontSize: 20, color: Colors.black, fontFamily: 'MonoRoboto'),
+                                      ),
                                     ),
                                     index==1?Switch(
                                       // thumb color (round icon)

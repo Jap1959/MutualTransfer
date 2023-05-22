@@ -1,44 +1,41 @@
 
 
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-class TextfieldApp extends StatefulWidget {
-  TextfieldApp({required this.Email,required this.HintText, this.icon,required this.color});
-   TextEditingController Email=TextEditingController();
-   String HintText;
-   IconData? icon;
-   Color color;
+class SearchBarApp extends StatefulWidget {
+  const SearchBarApp({required this.Hintext,required this.color});
+  final String Hintext;
+  final Color color;
 
   @override
-  State<TextfieldApp> createState() => _TextfieldAppState();
+  State<SearchBarApp> createState() => _SearchBarAppState();
 }
 
-class _TextfieldAppState extends State<TextfieldApp> {
-
-
+class _SearchBarAppState extends State<SearchBarApp> {
   @override
   Widget build(BuildContext context) {
-    return  Container(
+    return Container(
       width: 550,
-      height: 50,
+      height:45,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(15),
+        borderRadius: BorderRadius.circular(10),
         color: widget.color,
       ),
       child: TextFormField(
-        controller: widget.Email,
         cursorColor: Colors.black,
         enableSuggestions: true,
         decoration: InputDecoration(
-          hintText: widget.HintText,
+          contentPadding: EdgeInsets.fromLTRB(0.0, 10, 0.0, 10),
+          hintText: widget.Hintext,
           hintStyle: TextStyle(color:Colors.grey[500]),
-          prefixIcon: Padding(
-            padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 8),
-            child: Icon(
-              widget.icon,
-            ),
+          prefixIcon: Icon(
+            Icons.search,
+            color: Colors.black,
           ),
+          suffixIcon: Icon(Icons.mic,color: Colors.black,),
           border: OutlineInputBorder(
             borderSide: BorderSide.none,
             borderRadius: BorderRadius.circular(15),

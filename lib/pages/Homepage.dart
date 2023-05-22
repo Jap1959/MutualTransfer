@@ -1,15 +1,22 @@
 import 'package:connect2prof/CustomWidgets/Colors.dart';
+import 'package:connect2prof/CustomWidgets/PostDesign.dart';
+import 'package:connect2prof/UsersData/UsersData.dart';
 import 'package:connect2prof/bloc/appbloc.dart';
 import 'package:connect2prof/pages/ChatRoom.dart';
 import 'package:connect2prof/pages/Dashboard.dart';
 import 'package:connect2prof/pages/DetailsPage.dart';
 import 'package:connect2prof/pages/Notification.dart';
+import 'package:connect2prof/pages/PostPage.dart';
+import 'package:connect2prof/pages/ProfilePage.dart';
 import 'package:connect2prof/pages/SettingPage.dart';
 import 'package:connect2prof/pages/chatInterface.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+
+import '../databaseservices/GetData.dart';
+import '../variables.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({Key? key}) : super(key: key);
@@ -19,23 +26,16 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
-
   int _selectedIndex=0;
   int notifiy=0;
   final List<Widget> pages = [
     Dashboard(),
     ChatInterface(),
-    SettingsPage(),
+   ProfilePage(),
   ];
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
-      // if(_selectedIndex==1){
-      //   Get.to(()=>ChatInterface());
-      // }
-      // if(_selectedIndex==2){
-      //   Get.to(()=>SettingsPage());
-      // }
     });
   }
   @override
@@ -44,20 +44,20 @@ class _HomepageState extends State<Homepage> {
     final Width=MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: kPrimary,
-      appBar:_selectedIndex==1?AppBar(
+      appBar:_selectedIndex==1? AppBar(
         backgroundColor: Colors.white,
-        leading: Text('Messages',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 30.0),),
         elevation: 0.0,
         title: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
+            Text('Messages',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 25.0),),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Image(image: NetworkImage('https://img.icons8.com/?size=512&id=15042&format=png')),
+              child: Image(image: NetworkImage('https://img.icons8.com/?size=512&id=15042&format=png',scale: 20)),
             ),
           ],
         ),
-      ):AppBar(
+      ):_selectedIndex==0?AppBar(
         leading: Padding(
           padding: const EdgeInsets.fromLTRB(6.0, 15, 0.0, 10),
           child: Text("MTF",
@@ -76,7 +76,7 @@ class _HomepageState extends State<Homepage> {
               padding: const EdgeInsets.fromLTRB(135, 0.0, 0.0, 0.0),
               child: GestureDetector(
                 onTap: (){
-                  Get.to(()=>NotificationPage());
+                  Get.to(()=>PostPage());
                 },
                 child: ClipOval(child:Icon(Icons.add,color: Colors.black,)),
               ),
@@ -104,8 +104,40 @@ class _HomepageState extends State<Homepage> {
             ),
           ],
         ),
+        backgroundColor: Colors.grey[100],
+        elevation: 0.0,
+      ):AppBar(
         backgroundColor: Colors.white,
         elevation: 0.0,
+        leading: GestureDetector(
+          onTap: (){
+            Get.back();
+          },
+          child: Row(
+            children: [
+              Icon(
+                Icons.arrow_back_ios_new,
+                color: kPrimary,
+              ),
+              Text(
+                'Back',
+                style: TextStyle(fontSize: 14, color:kPrimary, fontFamily: 'MonoRoboto'),
+              ),
+            ],
+          ),
+        ),
+        title:Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+
+            GestureDetector(
+                onTap: (){
+                  Get.to(()=>SettingsPage());
+                },
+                child: Image(image: NetworkImage('https://img.icons8.com/?size=1x&id=364&format=png',scale: 2))),
+
+          ],
+        ),
       ),
       body:
       Container(
@@ -113,10 +145,10 @@ class _HomepageState extends State<Homepage> {
           width: Width,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(40),
-              bottomRight: Radius.circular(40),
+              bottomLeft: Radius.circular(20),
+              bottomRight: Radius.circular(20),
             ),
-            color: Colors.white,
+            color: Colors.grey[100],
           ),
           child:pages[_selectedIndex],
       ),
@@ -137,7 +169,7 @@ class _HomepageState extends State<Homepage> {
           label: "Chat",
           icon:Icon(Icons.messenger_outline,)),
        BottomNavigationBarItem(
-         label: "Settings",
+         label: "Profile",
            icon:Icon(Icons.person_2_outlined,)),
 
     ],

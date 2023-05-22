@@ -54,6 +54,7 @@ class _SplashScreenState extends State<SplashScreen> {
            );
           }
           if(state is UserloginedState){
+
             return Homepage();
           }
         if(state is UserlogoutSate){

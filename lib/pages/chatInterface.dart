@@ -1,6 +1,8 @@
 
 
 
+import 'package:connect2prof/CustomWidgets/Colors.dart';
+import 'package:connect2prof/CustomWidgets/Serachbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -21,22 +23,7 @@ class _ChatInterfaceState extends State<ChatInterface> {
   Widget build(BuildContext context) {
     final Height=MediaQuery.of(context).size.height;
     final Width=MediaQuery.of(context).size.width;
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0.0,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text('Messages',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 25.0),),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Image(image: NetworkImage('https://img.icons8.com/?size=512&id=15042&format=png',scale: 20)),
-            ),
-          ],
-        ),
-      ),
-      body: Container(
+    return Container(
         height: Height*0.9,
         width: Width,
         decoration: BoxDecoration(
@@ -51,39 +38,7 @@ class _ChatInterfaceState extends State<ChatInterface> {
             children: [
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Container(
-              width: 550,
-              height:45,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: Colors.grey[100],
-              ),
-              child: TextFormField(
-                cursorColor: Colors.black,
-                enableSuggestions: true,
-                decoration: InputDecoration(
-                  hintText: "Search",
-                  hintStyle: TextStyle(color:Colors.grey[500]),
-                  prefixIcon: Padding(
-                    padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 8),
-                    child: Icon(
-                     Icons.search,
-                      color: Colors.black,
-                    ),
-                  ),
-                  suffixIcon: Icon(Icons.mic,color: Colors.black,),
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide.none,
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  focusedBorder:OutlineInputBorder(
-                    borderSide: BorderSide.none,
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  focusColor: Colors.black,
-                ),
-              ),
-          ),
+              child:SearchBarApp(Hintext: 'Search Name', color: Colors.grey.shade100,),
             ),
 
               Container(
@@ -132,7 +87,6 @@ class _ChatInterfaceState extends State<ChatInterface> {
             ],
           ),
         ),
-      ),
     );
   }
 }
