@@ -23,7 +23,7 @@ class validationOfForm{
      if(Name.length==0){
        return 'Enter your Name';
      }
-     if(Description.length<200){
+     if(Description.length<100){
        return 'Minimum 100 words';
      }
      if(CurrentLocation.length==0){

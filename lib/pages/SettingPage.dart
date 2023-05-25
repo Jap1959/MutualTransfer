@@ -8,7 +8,10 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 
 import '../authentication/auth.dart';
+import '../databaseservices/GetData.dart';
 import 'Loginpage.dart';
+import 'ProfileEditPage.dart';
+import 'ResetPasword.dart';
 
 
 class SettingsPage extends StatefulWidget {
@@ -50,99 +53,174 @@ bool Notificationoff=false;
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 30.0),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.fromLTRB(0.0, 30, 0.0, 0.0),
-        child: Container(
-          height: Height*0.9,
-          width: Width,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(
-              topRight: Radius.circular(40),
-              topLeft: Radius.circular(40),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(0.0, 30, 0.0, 0.0),
+          child: Container(
+            height: Height*0.9,
+            width: Width,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                topRight: Radius.circular(40),
+                topLeft: Radius.circular(40),
+              ),
+              color: Colors.white,
             ),
-            color: Colors.white,
-          ),
-          child: SingleChildScrollView(
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(0.0, 40, 0.0, 0.0),
-              child: Column(
-                children: [
-                  Container(
-                    height: 600,
-                    width: double.infinity,
-                    child: ListView.builder(
-                      itemCount: items.length,
-                      itemBuilder: (BuildContext context, int index) {
-
-                        return ListTile(
-                          title:  index==items.length-1? Padding(
-                            padding: const EdgeInsets.all(20.0),
-                            child: GestureDetector(
-                              onTap: (){
-                                Authentication _auth=Authentication();
-                                _auth.signOut();
-                                Get.offAll(()=>WelcomeScrenn());
-                              },
-                                child: ButtonAPP(Name: 'Log Out',iconpre:Icons.exit_to_app_outlined ,)),
-                          ) :Container(
-                              width: 1000,
-                              height: 60,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(15.0),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                  Image(image: NetworkImage(icons[index])),
-                                    index==0?Padding(
-                                      padding: const EdgeInsets.fromLTRB(0.0  , 0.0 , 150, 0.0),
-                                      child: Text(
-                                        items[index],
-                                        style: TextStyle(fontSize: 20, color: Colors.black, fontFamily: 'MonoRoboto'),
-                                      ),
-                                    ):index==1?Padding(
-                                      padding: const EdgeInsets.fromLTRB(0.0  , 0.0 , 120, 0.0),
-                                      child: Text(
-                                        items[index],
-                                        style: TextStyle(fontSize: 20, color: Colors.black, fontFamily: 'MonoRoboto'),
-                                      ),
-                                    ):index==2?Padding(
-                                      padding: const EdgeInsets.fromLTRB(0.0  , 0.0 , 100, 0.0),
-                                      child: Text(
-                                        items[index],
-                                        style: TextStyle(fontSize: 20, color: Colors.black, fontFamily: 'MonoRoboto'),
-                                      ),
-                                    ):Padding(
-                                      padding: const EdgeInsets.fromLTRB(0.0  , 0.0 , 200, 0.0),
-                                      child: Text(
-                                        items[index],
-                                        style: TextStyle(fontSize: 20, color: Colors.black, fontFamily: 'MonoRoboto'),
-                                      ),
-                                    ),
-                                    index==1?Switch(
-                                      // thumb color (round icon)
-                                      activeColor: Colors.white,
-                                      activeTrackColor: kPrimary,
-                                      inactiveThumbColor: Colors.white,
-                                      inactiveTrackColor: Colors.grey.shade400,
-                                      splashRadius: 50.0,
-                                      // boolean variable value
-                                      value: Notificationoff,
-                                      // changes the state of the switch
-                                      onChanged: (value) => setState(() => Notificationoff = value),
-                                    ):Icon(Icons.arrow_forward_ios_rounded,color: Colors.black,),
-                                  ],
-                                ),
+              padding: const EdgeInsets.only(top: 50),
+              child: Container(
+                height: 600,
+                width: double.infinity,
+                child: Column(
+                  children: [
+                    GestureDetector(
+                      onTap:() async {
+                        GetData _getdata=GetData();
+                        final user=await _getdata.Currentuser();
+                        print(user);
+                        Get.to(()=>ProfileEditPage(Name: user.Name, Mobile:user.Mobile_no, url:user.Profilepic, Email: user.Email, City: user.currentplace));
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 20, 20, 0.0),
+                        child: Container(
+                          height: Height*0.055,
+                          width: Width,
+                          child: Row(
+                            children: [
+                              Image(image: NetworkImage('https://img.icons8.com/?size=512&id=15042&format=png',scale: 20)),
+                            Padding(
+                           padding: const EdgeInsets.fromLTRB(0.0  , 0.0 , 200, 0.0),
+                          child: Text(
+                            'Edit Profile',
+                             style: TextStyle(fontSize: 20, color: Colors.black, fontFamily: 'MonoRoboto'),
+                           ),
+                            ),
+                              Icon(Icons.arrow_forward_ios_rounded,color: Colors.black,),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 20, 20, 0.0),
+                      child: Container(
+                        height: Height*0.055,
+                        width: Width,
+                        child: Row(
+                          children: [
+                            Image(image: NetworkImage('https://img.icons8.com/?size=512&id=eMfeVHKyTnkc&format=png',scale: 20)),
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(0.0  , 0.0 , 160, 0.0),
+                              child: Text(
+                                'Notification',
+                                style: TextStyle(fontSize: 20, color: Colors.black, fontFamily: 'MonoRoboto'),
                               ),
                             ),
-                        );
-                      },
+                            Switch(
+                              // thumb color (round icon)
+                              activeColor: Colors.white,
+                              activeTrackColor: kPrimary,
+                              inactiveThumbColor: Colors.white,
+                              inactiveTrackColor: Colors.grey.shade400,
+                              splashRadius: 50.0,
+                              // boolean variable value
+                              value: Notificationoff,
+                              // changes the state of the switch
+                              onChanged: (value) => setState(() => Notificationoff = value),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
-                  ),
-                ],
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 20, 20, 0.0),
+                      child: GestureDetector(
+                        onTap:() async {
+                          Get.to(()=>ResetPasswordPage());
+                        },
+                        child: Container(
+                          height: Height*0.055,
+                          width: Width,
+                          child: Row(
+                            children: [
+                              Image(image: NetworkImage('https://img.icons8.com/?size=512&id=82747&format=png',scale: 20)),
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(0.0  , 0.0 , 135, 0.0),
+                                child: Text(
+                                  'Change Password',
+                                  style: TextStyle(fontSize: 20, color: Colors.black, fontFamily: 'MonoRoboto'),
+                                ),
+                              ),
+                              Icon(Icons.arrow_forward_ios_rounded,color: Colors.black,),
+                            ],
+                          ),
+                        ),
 
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 20, 20, 0.0),
+                      child: GestureDetector(
+                        onTap:() async {
+
+                        },
+                        child: Container(
+                          height: Height*0.055,
+                          width: Width,
+                          child: Row(
+                            children: [
+                              Image(image: NetworkImage('https://img.icons8.com/?size=512&id=HJMT3crrSiU0&format=png',scale: 20)),
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(0.0  , 0.0 , 245, 0.0),
+                                child: Text(
+                                  'About',
+                                  style: TextStyle(fontSize: 20, color: Colors.black, fontFamily: 'MonoRoboto'),
+                                ),
+                              ),
+                              Icon(Icons.arrow_forward_ios_rounded,color: Colors.black,),
+                            ],
+                          ),
+                        ),
+
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 20, 20, 0.0),
+                      child: GestureDetector(
+                        onTap:() async {
+
+                        },
+                        child: Container(
+                          height: Height*0.055,
+                          width: Width,
+                          child: Row(
+                            children: [
+                              Image(image: NetworkImage('https://img.icons8.com/?size=1x&id=646&format=png',scale: 20)),
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(0.0  , 0.0 , 280, 0.0),
+                                child: Text(
+                                  'Help',
+                                  style: TextStyle(fontSize: 20, color: Colors.black, fontFamily: 'MonoRoboto'),
+                                ),
+                              ),
+                              Icon(Icons.arrow_forward_ios_rounded,color: Colors.black,),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+              Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: GestureDetector(
+                onTap: (){
+                  Authentication _auth=Authentication();
+                  _auth.signOut();
+                  Get.offAll(()=>LoginPage());
+                },
+                child: ButtonAPP(Name: 'Log Out',iconpre:Icons.exit_to_app_outlined ,)),
+              ),
+                  ],
+                )
               ),
             ),
           ),

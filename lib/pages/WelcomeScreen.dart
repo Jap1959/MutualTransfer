@@ -21,9 +21,14 @@ class WelcomeScrenn extends StatefulWidget {
 class _WelcomeScrennState extends State<WelcomeScrenn> {
   late PageController _pageController;
   List<String> images = [
-    "https://images.wallpapersden.com/image/download/purple-sunrise-4k-vaporwave_bGplZmiUmZqaraWkpJRmbmdlrWZlbWU.jpg",
-    "https://wallpaperaccess.com/full/2637581.jpg",
-    "https://uhdwallpapers.org/uploads/converted/20/01/14/the-mandalorian-5k-1920x1080_477555-mm-90.jpg"
+    "https://images.unsplash.com/photo-1564522365984-c08ed1f78893?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NDZ8fG5ldHdvcmtpbmclMjBldmVudHxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60",
+    "https://images.unsplash.com/photo-1659629824175-56739d1611a2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MzF8fGV4cGxvcmUlMjB0ZWNobm9sb2d5fGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60",
+    "https://images.unsplash.com/photo-1535957998253-26ae1ef29506?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8d29ya3xlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60"
+  ];
+  List<String> Itemtag = [
+    'Expand Your Network',
+    "Explore Oppurinties",
+    "Let's Get Started to Find partner To Swap",
   ];
   late  var activepage=0;
   late  var getstarted=0;
@@ -59,8 +64,17 @@ class _WelcomeScrennState extends State<WelcomeScrenn> {
                     alignment: Alignment.bottomLeft,
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(20.0, 0.0, 0.0, 40),
-                      child: Row(
-                        children: indicators(images.length,activepage ),
+                      child: Column(
+                       mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(Itemtag[activepage],style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontFamily: 'MonoRoboto',fontSize: 25),),
+                          ),
+                          Row(
+                            children: indicators(images.length,activepage ),
+                          ),
+                        ],
                       ),
                     ),
                   ),

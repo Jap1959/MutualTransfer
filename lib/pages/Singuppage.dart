@@ -4,7 +4,7 @@ import 'package:connect2prof/CustomWidgets/Colors.dart';
 import 'package:connect2prof/CustomWidgets/LoadingButton.dart';
 import 'package:connect2prof/CustomWidgets/Textfield.dart';
 import 'package:connect2prof/CustomWidgets/TextfieldPassword.dart';
-import 'package:connect2prof/bloc/appbloc.dart';
+import 'package:connect2prof/bloc/ChatPageBLoc.dart';
 import 'package:connect2prof/bloc/events.dart';
 import 'package:connect2prof/pages/DetailsPage.dart';
 import 'package:connect2prof/pages/Loginpage.dart';
@@ -17,6 +17,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/snackbar/snackbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../authentication/auth.dart';
+import '../bloc/SinupPageBLoc.dart';
 import '../bloc/statesofapp.dart';
 
 class SingupPage extends StatefulWidget {
@@ -113,7 +114,7 @@ class _SingupPageState extends State<SingupPage> {
                     ),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(8, 20, 10, 10),
-                      child: GestureDetector(onTap: () async {
+                      child: state is ButtonPressedState ?LoadingButton():GestureDetector(onTap: () async {
                         String RePassword = Repass.text.toString();
                         String Password = Pass.text.toString();
                         if(RePassword==Password) {
@@ -129,7 +130,7 @@ class _SingupPageState extends State<SingupPage> {
                           );
                         }
                       },
-                        child:state==ButtonPressedState() ?LoadingButton():ButtonAPP(
+                        child:ButtonAPP(
                           Name: "Create Account", icon: Icons.arrow_forward,),
                       ),
                     ),

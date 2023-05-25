@@ -4,10 +4,12 @@ import 'package:connect2prof/CustomWidgets/Colors.dart';
 import 'package:connect2prof/CustomWidgets/LoadingButton.dart';
 import 'package:connect2prof/CustomWidgets/TextfieldPassword.dart';
 import 'package:connect2prof/authentication/auth.dart';
-import 'package:connect2prof/bloc/appbloc.dart';
+import 'package:connect2prof/bloc/ChatPageBLoc.dart';
 import 'package:connect2prof/bloc/events.dart';
 import 'package:connect2prof/bloc/statesofapp.dart';
+import 'package:connect2prof/pages/DetailsPage.dart';
 import 'package:connect2prof/pages/Homepage.dart';
+import 'package:connect2prof/pages/ResetPasword.dart';
 import 'package:connect2prof/pages/Singuppage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +18,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 
 import '../CustomWidgets/Textfield.dart';
+import '../bloc/LoginPageBLoc.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -121,12 +124,10 @@ class _LoginPageState extends State<LoginPage> {
                            if(state is LoginUnsucessfullState){
                              Get.snackbar("Error", "${state.Error}"
                                  ,icon: Icon(Icons.close,color: Colors.white,),
+                                 snackPosition: SnackPosition.TOP,
                                  backgroundColor: Colors.red
                              );
 
-                           }
-                           if(state is LoginSucessState){
-                             Get.offAll(()=>Homepage());
                            }
                          },
                            child:state==ButtonPressedState()?LoadingButton():ButtonAPP(
@@ -137,14 +138,14 @@ class _LoginPageState extends State<LoginPage> {
                          mainAxisAlignment: MainAxisAlignment.center,
                          crossAxisAlignment: CrossAxisAlignment.center,
                          children: [
-                           Text("Don't have account?", style: TextStyle(
+                           Text("Forget Password?", style: TextStyle(
                              fontFamily: 'RobotoMono',
                              fontSize: 15,
                              color: Colors.black,
                            ),),
                            TextButton(onPressed: () {
-                             Get.to(SingupPage());
-                           }, child: Text("Singup", style: TextStyle(
+                             Get.to(ResetPasswordPage());
+                           }, child: Text("Reset Password", style: TextStyle(
                              fontFamily: 'RobotoMono',
                              fontSize: 15,
                              color: kPrimary,
@@ -152,6 +153,7 @@ class _LoginPageState extends State<LoginPage> {
                            ),
                          ],
                        ),
+
                        Padding(
                          padding: const EdgeInsets.all(8.0),
                          child: GestureDetector(
@@ -164,7 +166,7 @@ class _LoginPageState extends State<LoginPage> {
                                    backgroundColor: Colors.green,
                                    icon: Icon(
                                      Icons.check, color: Colors.white,));
-                               Get.offAll(() => Homepage());
+                               Get.offAll(() => DetailsPage());
                              }
                            },
                            child: Container(
@@ -195,6 +197,25 @@ class _LoginPageState extends State<LoginPage> {
                              ),
                            ),
                          ),
+                       ),
+                       Row(
+                         mainAxisAlignment: MainAxisAlignment.center,
+                         crossAxisAlignment: CrossAxisAlignment.center,
+                         children: [
+                           Text("Don't have account?", style: TextStyle(
+                             fontFamily: 'RobotoMono',
+                             fontSize: 15,
+                             color: Colors.black,
+                           ),),
+                           TextButton(onPressed: () {
+                             Get.to(SingupPage());
+                           }, child: Text("Singup", style: TextStyle(
+                             fontFamily: 'RobotoMono',
+                             fontSize: 15,
+                             color: kPrimary,
+                           ),),
+                           ),
+                         ],
                        ),
                      ],
                    ),

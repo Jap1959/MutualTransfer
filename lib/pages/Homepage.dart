@@ -1,7 +1,8 @@
 import 'package:connect2prof/CustomWidgets/Colors.dart';
 import 'package:connect2prof/CustomWidgets/PostDesign.dart';
 import 'package:connect2prof/UsersData/UsersData.dart';
-import 'package:connect2prof/bloc/appbloc.dart';
+import 'package:connect2prof/bloc/ChatPageBLoc.dart';
+import 'package:connect2prof/bloc/events.dart';
 import 'package:connect2prof/pages/ChatRoom.dart';
 import 'package:connect2prof/pages/Dashboard.dart';
 import 'package:connect2prof/pages/DetailsPage.dart';
@@ -10,33 +11,38 @@ import 'package:connect2prof/pages/PostPage.dart';
 import 'package:connect2prof/pages/ProfilePage.dart';
 import 'package:connect2prof/pages/SettingPage.dart';
 import 'package:connect2prof/pages/chatInterface.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../databaseservices/GetData.dart';
 import '../variables.dart';
 
 class Homepage extends StatefulWidget {
-  const Homepage({Key? key}) : super(key: key);
+   Homepage({required this.noticount});
+  int noticount;
 
   @override
   State<Homepage> createState() => _HomepageState();
 }
-
+final apikey='nk32j37dgyqb';
+final usertoken='wpf3wqev345djzptrqu46ksp5454gkay6beprwazkuy2jcubr7g6kf9sdd7shuga';
 class _HomepageState extends State<Homepage> {
   int _selectedIndex=0;
-  int notifiy=0;
+
   final List<Widget> pages = [
     Dashboard(),
-    ChatInterface(),
+  ChatInterface(),
    ProfilePage(),
   ];
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+  Future<void> _onItemTapped(int index) async {
+
+      setState(() {
+        _selectedIndex = index;
+      });
   }
   @override
   Widget build(BuildContext context) {
@@ -75,33 +81,30 @@ class _HomepageState extends State<Homepage> {
             Padding(
               padding: const EdgeInsets.fromLTRB(135, 0.0, 0.0, 0.0),
               child: GestureDetector(
-                onTap: (){
-                  Get.to(()=>PostPage());
+                onTap: () async {
+                  SharedPreferences prefs=await SharedPreferences.getInstance();
+                  final Name=prefs.getString('Name');
+                  final Mobile=prefs.getString('Mobile');
+                  final Url=prefs.getString('Url');
+                  Get.to(()=>PostPage(Mobile.toString(), Name.toString(), Url.toString()));
                 },
                 child: ClipOval(child:Icon(Icons.add,color: Colors.black,)),
               ),
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(20, 0.0, 0.0, 0.0),
-              child: GestureDetector(
-                onTap: (){
-                  Get.to(()=>NotificationPage());
-                },
-                child: Stack(
-                  alignment: Alignment.topRight,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(0.0, 0.0, 5, 0.0),
-                      child: CircleAvatar(
-                        radius: 3,
-                        backgroundColor: notifiy==0?Colors.transparent:Colors.red,
-                      ),
-                    ),
-                    Icon(Icons.notifications_none,color: Colors.black,),
-                  ],
-                ),
+              child: Badge(
+                isLabelVisible: widget.noticount==0?false:true,
+                  child:GestureDetector(
+                      onTap: () async {
+                        SharedPreferences prefs=await SharedPreferences.getInstance();
+                        prefs.setInt('Notification', 0);
+                           Get.to(()=>NotificationPage());
+
+                      },
+                      child: Icon(Icons.notifications_none,color: Colors.black)),
               ),
-            ),
+              ),
           ],
         ),
         backgroundColor: Colors.grey[100],
@@ -109,27 +112,14 @@ class _HomepageState extends State<Homepage> {
       ):AppBar(
         backgroundColor: Colors.white,
         elevation: 0.0,
-        leading: GestureDetector(
-          onTap: (){
-            Get.back();
-          },
-          child: Row(
-            children: [
-              Icon(
-                Icons.arrow_back_ios_new,
-                color: kPrimary,
-              ),
-              Text(
-                'Back',
-                style: TextStyle(fontSize: 14, color:kPrimary, fontFamily: 'MonoRoboto'),
-              ),
-            ],
-          ),
-        ),
         title:Row(
-          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
-
+            Text(
+              'Profile',
+              style: TextStyle(fontSize: 25, color:Colors.black, fontFamily: 'MonoRoboto'),
+            ),
+            SizedBox(width: Width*0.50,),
             GestureDetector(
                 onTap: (){
                   Get.to(()=>SettingsPage());

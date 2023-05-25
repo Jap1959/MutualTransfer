@@ -1,6 +1,6 @@
 
 import 'package:connect2prof/authentication/auth.dart';
-import 'package:connect2prof/bloc/appbloc.dart';
+import 'package:connect2prof/bloc/ChatPageBLoc.dart';
 import 'package:connect2prof/pages/DetailsPage.dart';
 import 'package:connect2prof/pages/Homepage.dart';
 import 'package:connect2prof/pages/Loginpage.dart';
@@ -12,6 +12,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 
+import '../bloc/SplashScreenBloc.dart';
 import '../bloc/events.dart';
 import '../bloc/statesofapp.dart';
 
@@ -35,6 +36,9 @@ class _SplashScreenState extends State<SplashScreen> {
   }
   @override
   Widget build(BuildContext context) {
+    final Height=MediaQuery.of(context).size.height;
+    final Width=MediaQuery.of(context).size.width;
+
     return
       BlocBuilder<Blocusage,AppStates>(
           builder: (context,state){
@@ -54,13 +58,15 @@ class _SplashScreenState extends State<SplashScreen> {
            );
           }
           if(state is UserloginedState){
-
-            return Homepage();
+            return Homepage(noticount: state.noticount,);
           }
         if(state is UserlogoutSate){
           return LoginPage();
         }
-        return Container();
+        return Container(
+          height: Height,
+          width: Width,
+          color: Colors.white,);
         }
       );
   }

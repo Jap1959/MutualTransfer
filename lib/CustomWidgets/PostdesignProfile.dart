@@ -6,8 +6,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class PostDesign extends StatefulWidget {
-  PostDesign({required this.CurrentPlace,required this.DestinationPlace,required this.decription,required this.Mobile, required this.url, required this.Name, required this.Proffesion});
+class PostProfileDesign extends StatefulWidget {
+  PostProfileDesign({required this.CurrentPlace,required this.DestinationPlace,required this.decription,required this.Mobile, required this.url, required this.Name, required this.Proffesion});
   final String CurrentPlace;
   final String DestinationPlace;
   final String url;
@@ -17,17 +17,17 @@ class PostDesign extends StatefulWidget {
   final String Proffesion;
 
   @override
-  State<PostDesign> createState() => _PostDesignState();
+  State<PostProfileDesign> createState() => _PostProfileDesignState();
 }
-class _PostDesignState extends State<PostDesign> {
+class _PostProfileDesignState extends State<PostProfileDesign> {
   bool readMore = false;
   @override
   Widget build(BuildContext context) {
     final Width=MediaQuery.of(context).size.width;
     final Height=MediaQuery.of(context).size.height;
     return Container(
-      width: 1200,
-      height: 325,
+      width: Width,
+      height: Height*0.35,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
         color: Colors.white,
@@ -44,10 +44,10 @@ class _PostDesignState extends State<PostDesign> {
                     backgroundImage: NetworkImage(widget.url),
                   ),
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(10, 8, 0.0, 0.0),
+                    padding: const EdgeInsets.fromLTRB(10, 10, 0.0, 0.0),
                     child: Text(widget.Name,style: TextStyle(fontFamily: 'MonoRoboto',fontSize: 20,fontWeight: FontWeight.bold,color: Colors.black)),
                   ),
-                  SizedBox(width: Width*0.2,),
+                  SizedBox(width: Width*0.1,),
                   Padding(
                     padding: const EdgeInsets.only(top: 12),
                     child: Column(
@@ -75,13 +75,13 @@ class _PostDesignState extends State<PostDesign> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
 
-                     Row(
-                       children: [
-                         Text('RequiredPlace',style: TextStyle(fontFamily: 'MonoRoboto',fontSize: 15,color: kPrimary)),
-                         SizedBox(width: Width*0.05,),
-                         Text(widget.DestinationPlace,style: TextStyle(fontFamily: 'MonoRoboto',fontSize: 15,color: Colors.black)),
-                       ],
-                     ),
+                      Row(
+                        children: [
+                          Text('RequiredPlace',style: TextStyle(fontFamily: 'MonoRoboto',fontSize: 15,color: kPrimary)),
+                          SizedBox(width: Width*0.05,),
+                          Text(widget.DestinationPlace,style: TextStyle(fontFamily: 'MonoRoboto',fontSize: 15,color: Colors.black)),
+                        ],
+                      ),
                       Row(
                         children: [
                           Text('Proffession',style: TextStyle(fontFamily: 'MonoRoboto',fontSize: 15,color: kPrimary)),
@@ -90,52 +90,16 @@ class _PostDesignState extends State<PostDesign> {
                         ],
                       ),
                       SizedBox(height: Height*0.01,),
-
                       Text(
                         widget.decription,
                         textAlign: TextAlign.center,
-                        maxLines: readMore ? 100 : 9,
+                        maxLines: readMore ? 100 : 8,
                         overflow: TextOverflow.ellipsis,
                       ),
                     ],
                   ),
                 ),
 
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    GestureDetector(
-                      onTap: () async {
-                        final Uri launchUri = Uri(
-                          scheme: 'tel',
-                          path: widget.Mobile,
-                        );
-
-                        try{
-                          await launchUrl(launchUri);
-                        }
-                        catch(e){
-                          print(e.toString());
-                        }
-                      },
-                      child: Row(
-                        children: [
-                          Icon(Icons.phone_outlined,color: kPrimary,),
-                          SizedBox(width: Width*0.01,),
-                          Text('Call',style: TextStyle(fontFamily: 'MonoRoboto',fontSize: 20,color: kPrimary)),
-                        ],
-                      ),
-                    ),
-                    SizedBox(width: Width*0.1,),
-                    Icon(Icons.message_outlined,color: kPrimary,),
-                    SizedBox(width: Width*0.01,),
-                    Text('Message',style: TextStyle(fontFamily: 'MonoRoboto',fontSize: 20,color: kPrimary)),
-                  ],
-                ),
               ),
             ],
           )
