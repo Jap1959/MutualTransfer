@@ -1,11 +1,16 @@
 
 import 'package:connect2prof/CustomWidgets/PostDesign.dart';
 import 'package:connect2prof/CustomWidgets/Serachbar.dart';
+import 'package:connect2prof/databaseservices/Adddata.dart';
+import 'package:connect2prof/pages/chatInterface.dart';
 import 'package:connect2prof/usermodel/PostUploadDatamodel.dart';
 import 'package:connect2prof/usermodel/PostdataModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart' ;
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import '../CustomWidgets/Colors.dart';
 import '../bloc/HomepageBloc.dart';
 import '../bloc/ChatPageBLoc.dart';
@@ -108,7 +113,9 @@ class _DashboardState extends State<Dashboard> with AutomaticKeepAliveClientMixi
                   Container(
                     height: Height*0.7,
                     width: double.infinity,
-                    child:Searchresults.length==0?Center(child: Text('No Results found',style: TextStyle(fontFamily: 'MonoRoboto',fontSize: 20,color: kPrimary)),) :ListView.builder(
+                    child:state is ButtonPressedState?Center(child:SpinKitChasingDots(
+                      color: kPrimary,
+                    ),):Searchresults.length==0?Center(child: Text('No Results found',style: TextStyle(fontFamily: 'MonoRoboto',fontSize: 20,color: kPrimary)),) :ListView.builder(
                       itemCount: Searchresults.length,
                       itemBuilder: (BuildContext context, int index) {
                         return ListTile(
@@ -118,7 +125,9 @@ class _DashboardState extends State<Dashboard> with AutomaticKeepAliveClientMixi
                               CurrentPlace: Searchresults[index].CurrentPlace,
                               DestinationPlace: Searchresults[index].DestinationPlace,
                               decription: Searchresults[index].description,
-                              Mobile: Searchresults[index].MobileNo, url: Searchresults[index].Profilepic, Name: Searchresults[index].Name, Proffesion: Searchresults[index].Proffession,
+                              Mobile: Searchresults[index].MobileNo, url: Searchresults[index].Profilepic, Name: Searchresults[index].Name, Proffesion: Searchresults[index].Proffession, onTap: (){
+                              _blochomepage.add(MessageEvent(Users[index].PostedByUserid));
+                            },
                             ),
                           ),
                         );
@@ -183,7 +192,9 @@ class _DashboardState extends State<Dashboard> with AutomaticKeepAliveClientMixi
                   Container(
                     height: Height*0.7,
                     width: double.infinity,
-                    child:Users.length==0?Center(child: Text('No Post Yet Add First Post',style: TextStyle(fontFamily: 'MonoRoboto',fontSize: 20,color: kPrimary)),) :RefreshIndicator(
+                    child:state is ButtonPressedState?Center(child:SpinKitChasingDots(
+                      color: kPrimary,
+                    ),):Users.length==0?Center(child: Text('No Post Yet Add First Post',style: TextStyle(fontFamily: 'MonoRoboto',fontSize: 20,color: kPrimary)),) :RefreshIndicator(
                       onRefresh: () async{
                        _blochomepage.add(HomePageDataEvent());
                       },
@@ -197,7 +208,9 @@ class _DashboardState extends State<Dashboard> with AutomaticKeepAliveClientMixi
                                 CurrentPlace: Users[index].CurrentPlace,
                                 DestinationPlace: Users[index].DestinationPlace,
                                 decription: Users[index].description,
-                                Mobile: Users[index].MobileNo, url: Users[index].Profilepic, Name: Users[index].Name, Proffesion:Users[index].Proffession,
+                                Mobile: Users[index].MobileNo, url: Users[index].Profilepic, Name: Users[index].Name, Proffesion:Users[index].Proffession, onTap:(){
+                              _blochomepage.add(MessageEvent(Users[index].PostedByUserid));
+                              },
                               ),
                             ),
                           );

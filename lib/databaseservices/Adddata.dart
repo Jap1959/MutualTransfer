@@ -15,6 +15,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../pages/Homepage.dart';
 import '../usermodel/PostUploadDatamodel.dart';
+int chatnumber=0;
 class AddData{
    Future<void> adddata(Map<String,dynamic> Data) async {
       CollectionReference users = FirebaseFirestore.instance.collection('Users');
@@ -26,7 +27,7 @@ class AddData{
         prefs.setString('Mobile', Data['Mobile_no']);
           await users.doc(uid).set(Data);
         int? noticount=prefs.getInt('Notification');
-        Get.off(()=>Homepage(noticount: noticount!,));
+        Get.off(()=>Homepage(noticount: noticount!, index: 0,));
       }
       catch(e){
          print(e.toString());
@@ -43,7 +44,7 @@ class AddData{
           PostdataModel PostFinal=PostdataModel(DestinationPlace: Post!.DestinationPlace, Proffession: Post!.Proffession, description: Post!.description, PostedByUserid: Post!.PostedByUserid, MobileNo: Post.MobileNo, CurrentPlace: Post!.CurrentPlace, Name:Name! , Profilepic:Url!, Date: date.toString(), Time: now.toString());
            await post.add(PostFinal?.toMap());
            int? noticount=prefs.getInt('Notification');
-           Get.off(()=>Homepage(noticount: noticount!,));
+           Get.off(()=>Homepage(noticount: noticount!, index: 0,));
       }
       catch(e){
         print(e.toString());
@@ -62,5 +63,28 @@ class AddData{
     catch(e){
       print(e.toString());
     }
+  }
+  Future<void> AddChatroom(String recieveruid)async{
+
+    try{
+      final uid=FirebaseAuth.instance.currentUser?.uid;
+      DocumentSnapshot snapshot = await FirebaseFirestore.instance.collection('Users').doc(recieveruid).get();
+      if(snapshot.exists){
+        Map<String,dynamic> chatroom=snapshot['ChatRoom'];
+        String Chatid='${uid}_${recieveruid}';
+          if(!chatroom.containsValue(Chatid)){
+            final CollectionReference collectionReference2 = FirebaseFirestore.instance.collection('Users/$recieveruid/ChatRoom');
+            collectionReference2.doc(Chatid);
+            CollectionReference collectionReference1 = FirebaseFirestore.instance.collection('Users/$uid/ChatRoom');
+            collectionReference1.doc(Chatid);
+            final CollectionReference collectionReference = FirebaseFirestore.instance.collection('ChatRoom');
+            collectionReference.doc(Chatid);
+          }
+        }
+    }
+    catch(e){
+         print(e.toString());
+    }
+
   }
 }

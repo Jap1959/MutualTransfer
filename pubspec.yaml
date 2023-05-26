@@ -50,6 +50,7 @@ dependencies:
   intl_phone_number_input: ^0.7.3+1
   shared_preferences: ^2.1.1
   firebase_messaging: ^14.6.1
+  intl: ^0.18.1
   badges: ^3.1.1
 
 

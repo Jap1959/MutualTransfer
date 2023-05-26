@@ -4,6 +4,7 @@
 
 import 'package:connect2prof/pages/ProfilePage.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -180,7 +181,8 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
 
                               print(image.toString());
                               if(status=='true'){
-                                final userDatamodel=UserDatamodel(Name: Name.text.toString(), Email: Email.text.toString(), currentplace: City.text.toString(), Mobile_no: Mobile.text.toString(), Profilepic:image!, Proffession: Proffesion.text.toString() );
+                                final uid=FirebaseAuth.instance.currentUser?.uid;
+                                final userDatamodel=UserDatamodel(Name: Name.text.toString(), Email: Email.text.toString(), currentplace: City.text.toString(), Mobile_no: Mobile.text.toString(), Profilepic:image!, Proffession: Proffesion.text.toString(), is_online: 'true', LastSeen: '', uid: uid.toString() );
                                 _blocAddData.add(ProfileUpdateEvent(userDatamodel));
                               }
                               else{

@@ -87,14 +87,14 @@ import 'package:connect2prof/usermodel/PostUploadDatamodel.dart';
       }
     }
     Future<UserDatamodel> Currentuser() async {
-      final userdatamodeltemp =UserDatamodel(Name: '', Email: '', currentplace: '', Mobile_no: '', Profilepic: '', Proffession: '');
+      final userdatamodeltemp =UserDatamodel(Name: '', Email: '', currentplace: '', Mobile_no: '', Profilepic: '', Proffession: '', is_online: '', LastSeen: '', uid: '');
       final uid=FirebaseAuth.instance.currentUser?.uid;
       DocumentSnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance
           .collection('Users')
           .doc(uid)
           .get();
       if(snapshot.exists){
-        final userdatamodel=UserDatamodel(Name: snapshot['Name'], Email: snapshot['Email'], currentplace: snapshot['currentplace'], Mobile_no: snapshot['Mobile_no'], Profilepic: snapshot['Profilepic'], Proffession: snapshot['Proffession']);
+        final userdatamodel=UserDatamodel(Name: snapshot['Name'], Email: snapshot['Email'], currentplace: snapshot['currentplace'], Mobile_no: snapshot['Mobile_no'], Profilepic: snapshot['Profilepic'], Proffession: snapshot['Proffession'], is_online: snapshot['is_online'] , LastSeen:snapshot['Lastseen'], uid: snapshot['uid']);
         return userdatamodel;
       }
       else{

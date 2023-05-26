@@ -1,6 +1,9 @@
 
 import 'package:connect2prof/authentication/auth.dart';
 import 'package:connect2prof/bloc/ChatPageBLoc.dart';
+import 'package:connect2prof/databaseservices/AddchatRoomDetails.dart';
+import 'package:connect2prof/databaseservices/GetChatData.dart';
+import 'package:connect2prof/databaseservices/LifeCycle.dart';
 import 'package:connect2prof/pages/DetailsPage.dart';
 import 'package:connect2prof/pages/Homepage.dart';
 import 'package:connect2prof/pages/Loginpage.dart';
@@ -33,6 +36,8 @@ class _SplashScreenState extends State<SplashScreen> {
     passwordVisiblemain=true;
     _blocusage=BlocProvider.of<Blocusage>(context);
     _blocusage.add(Userauthenticationevent());
+    AppLifecycleObserver _lifecycle=AppLifecycleObserver();
+    WidgetsBinding.instance?.addObserver(_lifecycle);
   }
   @override
   Widget build(BuildContext context) {
@@ -58,7 +63,7 @@ class _SplashScreenState extends State<SplashScreen> {
            );
           }
           if(state is UserloginedState){
-            return Homepage(noticount: state.noticount,);
+            return Homepage(noticount: state.noticount, index: 0,);
           }
         if(state is UserlogoutSate){
           return LoginPage();
@@ -71,3 +76,4 @@ class _SplashScreenState extends State<SplashScreen> {
       );
   }
 }
+

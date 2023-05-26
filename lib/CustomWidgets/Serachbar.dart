@@ -6,11 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class SearchBarApp extends StatefulWidget {
-  const SearchBarApp({required this.Hintext,required this.color,required this.controller,required this.onchanged});
+  const SearchBarApp({required this.Hintext,required this.color,required this.controller});
   final String Hintext;
   final Color color;
   final TextEditingController controller;
-  final Function onchanged;
 
   @override
   State<SearchBarApp> createState() => _SearchBarAppState();
@@ -49,9 +48,8 @@ class _SearchBarAppState extends State<SearchBarApp> {
           ),
           focusColor: Colors.black,
         ),
-        onChanged: (value){
-
-        },
+        onChanged:(value) {
+          },
       ),
     );
   }

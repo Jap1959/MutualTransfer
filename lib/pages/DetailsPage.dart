@@ -15,6 +15,7 @@ import 'package:connect2prof/usermodel/usermodel.dart';
 import 'package:connect2prof/validation.dart';
 import 'package:equatable/equatable.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -183,7 +184,8 @@ class _DetailsPageState extends State<DetailsPage> {
 
                               print(image.toString());
                               if(status=='true'){
-                                final userDatamodel=UserDatamodel(Name: Name.text.toString(), Email: Email.text.toString(), currentplace: City.text.toString(), Mobile_no: Mobile.text.toString(), Profilepic:image!, Proffession: Proffession.text.toString() );
+                                final uid=FirebaseAuth.instance.currentUser?.uid;
+                                final userDatamodel=UserDatamodel(Name: Name.text.toString(), Email: Email.text.toString(), currentplace: City.text.toString(), Mobile_no: Mobile.text.toString(), Profilepic:image!, Proffession: Proffession.text.toString(), is_online: 'true', LastSeen: '', uid: uid.toString() );
                                 _blocAddData.add(AdddataEvent(userDatamodel));
                               }
                               else{
@@ -193,7 +195,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                 );
                               }
                               if(state is DataUploadedState){
-                                Get.offAll(()=>Homepage(noticount:state.noticount,));
+                                Get.offAll(()=>Homepage(noticount:state.noticount, index: 0,));
                               }
                             },
                             child: ButtonAPP(Name: 'Next',icon: Icons.arrow_forward,),

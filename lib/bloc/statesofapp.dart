@@ -9,6 +9,7 @@ import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 
+import '../usermodel/MessageDatamodel.dart';
 import '../usermodel/NotificationDatamodel.dart';
 import '../usermodel/Notificationgetdatamodel.dart';
 
@@ -87,18 +88,24 @@ class LoginSucessState extends AppStates {
 class SearchingState extends AppStates {
 
 }
+
 class SearchResultState extends AppStates {
   SearchResultState(this.Data);
   final List<PostdataModel> Data;
 }
+class SearchResultStateforchat extends AppStates {
+  SearchResultStateforchat(this.Data);
+  final List<UserDatamodel> Data;
+}
 class ChatLoadState extends AppStates{
-  @override
-  List<Object?> get props => [];
 }
 class ChatLoadedState extends AppStates{
-  ChatLoadedState();
-  @override
-  List<Object?> get props => [];
+  List<UserDatamodel> data;
+  ChatLoadedState(this.data);
+}
+class MessageLoadedSate extends AppStates{
+     List<MessageDatamodel> message;
+     MessageLoadedSate(this.message);
 }
 class ButtonPressedState extends AppStates {
   @override

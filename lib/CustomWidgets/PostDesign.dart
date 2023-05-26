@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class PostDesign extends StatefulWidget {
-  PostDesign({required this.CurrentPlace,required this.DestinationPlace,required this.decription,required this.Mobile, required this.url, required this.Name, required this.Proffesion});
+  PostDesign({required this.CurrentPlace,required this.DestinationPlace,required this.decription,required this.Mobile, required this.url, required this.Name, required this.Proffesion, required this.onTap});
   final String CurrentPlace;
   final String DestinationPlace;
   final String url;
@@ -15,6 +15,7 @@ class PostDesign extends StatefulWidget {
   final String Mobile;
   final String Name;
   final String Proffesion;
+  final VoidCallback onTap;
 
   @override
   State<PostDesign> createState() => _PostDesignState();
@@ -131,9 +132,16 @@ class _PostDesignState extends State<PostDesign> {
                       ),
                     ),
                     SizedBox(width: Width*0.1,),
-                    Icon(Icons.message_outlined,color: kPrimary,),
-                    SizedBox(width: Width*0.01,),
-                    Text('Message',style: TextStyle(fontFamily: 'MonoRoboto',fontSize: 20,color: kPrimary)),
+                    GestureDetector(
+                      onTap:widget.onTap,
+                      child: Row(
+                        children: [
+                          Icon(Icons.message_outlined,color: kPrimary,),
+                          SizedBox(width: Width*0.01,),
+                          Text('Message',style: TextStyle(fontFamily: 'MonoRoboto',fontSize: 20,color: kPrimary)),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),

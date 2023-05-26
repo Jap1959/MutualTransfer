@@ -58,7 +58,7 @@ class _NotificationPageState extends State<NotificationPage> {
                     onTap: () async {
                       SharedPreferences prefs=await SharedPreferences.getInstance();
                      int? noticount=prefs.getInt('Notification');
-                      Get.to(()=>Homepage(noticount: noticount!));
+                      Get.to(()=>Homepage(noticount: noticount!, index: 0,));
                     },
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(7.0, 0.0, 0.0, 0.0),
@@ -102,7 +102,7 @@ class _NotificationPageState extends State<NotificationPage> {
                     onTap: () async {
                       SharedPreferences prefs=await SharedPreferences.getInstance();
                       int? noticount=prefs.getInt('Notification');
-                      Get.to(()=>Homepage(noticount: noticount!));
+                      Get.to(()=>Homepage(noticount: noticount!, index: 0,));
                     },
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(7.0, 0.0, 0.0, 0.0),

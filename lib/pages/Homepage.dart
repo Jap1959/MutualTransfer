@@ -22,8 +22,9 @@ import '../databaseservices/GetData.dart';
 import '../variables.dart';
 
 class Homepage extends StatefulWidget {
-   Homepage({required this.noticount});
+   Homepage({required this.noticount,required this.index});
   int noticount;
+  int index;
 
   @override
   State<Homepage> createState() => _HomepageState();
@@ -31,7 +32,7 @@ class Homepage extends StatefulWidget {
 final apikey='nk32j37dgyqb';
 final usertoken='wpf3wqev345djzptrqu46ksp5454gkay6beprwazkuy2jcubr7g6kf9sdd7shuga';
 class _HomepageState extends State<Homepage> {
-  int _selectedIndex=0;
+   int _selectedIndex=0;
 
   final List<Widget> pages = [
     Dashboard(),
@@ -41,11 +42,13 @@ class _HomepageState extends State<Homepage> {
   Future<void> _onItemTapped(int index) async {
 
       setState(() {
+        widget.index=index;
         _selectedIndex = index;
       });
   }
   @override
   Widget build(BuildContext context) {
+    _selectedIndex=widget.index;
     final Height=MediaQuery.of(context).size.height;
     final Width=MediaQuery.of(context).size.width;
     return Scaffold(

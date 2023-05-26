@@ -1,5 +1,6 @@
 
 import 'package:connect2prof/CustomWidgets/ButtonAPP.dart';
+import 'package:connect2prof/usermodel/MessageDatamodel.dart';
 import 'package:connect2prof/usermodel/PostdataModel.dart';
 import 'package:connect2prof/usermodel/usermodel.dart';
 import 'package:equatable/equatable.dart';
@@ -45,6 +46,15 @@ class ResetPasswordEvent extends AppEvent{
   final String Email;
   ResetPasswordEvent(this.Email) ;
   List<Object> get props=>[];
+}
+class MessageEvent extends AppEvent{
+  final String uid;
+  MessageEvent(this.uid);
+}
+class MessageSendEvent extends AppEvent{
+  String uid;
+  MessageDatamodel message;
+  MessageSendEvent(this.message,this.uid);
 }
 class SinupPageEvent extends AppEvent{
   final String Email;
