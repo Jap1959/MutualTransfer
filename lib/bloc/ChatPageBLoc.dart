@@ -1,6 +1,3 @@
-
-
-
 import 'package:connect2prof/bloc/events.dart';
 import 'package:connect2prof/bloc/statesofapp.dart';
 import 'package:connect2prof/databaseservices/GetChatData.dart';
@@ -9,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'ChatPageBLoc.dart';
 
-class BlocChatPage extends Bloc<AppEvent,AppStates>{
+class BlocChatPage extends Bloc<AppEvent, AppStates> {
   String formatTimeAgo(int milliseconds) {
     DateTime currentTime = DateTime.now();
     DateTime convertedTime = DateTime.fromMillisecondsSinceEpoch(milliseconds);
@@ -35,46 +32,47 @@ class BlocChatPage extends Bloc<AppEvent,AppStates>{
       return '${years} year${years > 1 ? 's' : ''} ago';
     }
   }
-  BlocChatPage():super(ChatLoadState()){
-    on<ChatLoadEvent>((event,emit) async {
-      try{
-        GetChatData _getdata=GetChatData();
-        final users=await _getdata.ChatList();
-       users.forEach((element) {
-         String time=element.LastSeen;
-         if(time!="") {
-           final status = formatTimeAgo(int.parse(time));
-           element.LastSeen = status;
-         }
-       });
-        emit(ChatLoadedState(users));
+
+  BlocChatPage() : super(ChatLoadState()) {
+    Stream<AppStates> mapEventToState(ChatLoadEvent event) async* {
+      if (event is ChatLoadEvent) {
+        try {
+          // Fetch the chat list from the database
+          GetChatData _getdata = GetChatData();
+          List<UserDatamodel> users = await _getdata.ChatLists();
+          emit(ChatLoadedState(users));
+        } catch (e) {
+          // Handle any errors and emit an error state if necessary
+          print(e.toString());
+        }
       }
-      catch(e){
+    }
+
+    on<ChatLoadEvent>((event, emit) async {
+      try {
+        GetChatData _getdata = GetChatData();
+        List<UserDatamodel> users = await _getdata.ChatLists();
+        emit(ChatLoadedState(users));
+      } catch (e) {
         print(e.toString());
       }
     });
-    on<SearchEvent>((event,emit) async {
-      try{
-        GetChatData _getdata=GetChatData();
-        final List<UserDatamodel> user= await _getdata.ChatList();
-        List<UserDatamodel> results = user.where((user) =>
-        user.Name.toLowerCase().contains(event.searchvalue.toLowerCase()))
+    on<SearchEvent>((event, emit) async {
+      try {
+        GetChatData _getdata = GetChatData();
+        final List<UserDatamodel> user = await _getdata.ChatLists();
+        List<UserDatamodel> results = user
+            .where((user) => user.Name.toLowerCase()
+                .contains(event.searchvalue.toLowerCase()))
             .toList();
-        if(event.searchvalue=="") {
+        if (event.searchvalue == "") {
           emit(SearchResultStateforchat(user));
         }
         emit(SearchResultStateforchat(results));
         print(results.length);
-      }
-      catch(e){
+      } catch (e) {
         print(e.toString());
       }
     });
   }
-
 }
-
-class ChatList {
-}
-
-

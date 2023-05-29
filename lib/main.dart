@@ -15,12 +15,15 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'bloc/AdddataBloc.dart';
 import 'bloc/SinupPageBLoc.dart';
 import 'bloc/SplashScreenBloc.dart';
+import 'databaseservices/AddchatRoomDetails.dart';
+import 'databaseservices/LifeCycle.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(const C2P());
 }
+
 class C2P extends StatelessWidget {
   const C2P({Key? key}) : super(key: key);
 
@@ -28,22 +31,18 @@ class C2P extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: 'MutualTransfer',
-      theme: ThemeData(primarySwatch:Colors.teal,
+      theme: ThemeData(
+        primarySwatch: Colors.teal,
       ),
       home: MultiBlocProvider(providers: [
-        BlocProvider(create: (context)=>Blocusage()),
-        BlocProvider(create: (context)=>BlocAddData()),
-        BlocProvider(create: (context)=>BlocHompage()),
-        BlocProvider(create: (context)=>ProfileLoad()),
-        BlocProvider(create: (context)=>BlocLogin()),
-        BlocProvider(create: (context)=>BlocSingUp()),
-        BlocProvider(create: (context)=>BlocPostAdd()),
-
-
-      ],
-          child: SplashScreen()),
-    ) ;
+        BlocProvider(create: (context) => Blocusage()),
+        BlocProvider(create: (context) => BlocAddData()),
+        BlocProvider(create: (context) => BlocHompage()),
+        BlocProvider(create: (context) => ProfileLoad()),
+        BlocProvider(create: (context) => BlocLogin()),
+        BlocProvider(create: (context) => BlocSingUp()),
+        BlocProvider(create: (context) => BlocPostAdd()),
+      ], child: SplashScreen()),
+    );
   }
 }
-
-

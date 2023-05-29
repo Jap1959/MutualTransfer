@@ -1,4 +1,3 @@
-
 import 'package:connect2prof/authentication/auth.dart';
 import 'package:connect2prof/bloc/ChatPageBLoc.dart';
 import 'package:connect2prof/databaseservices/AddchatRoomDetails.dart';
@@ -27,53 +26,55 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  bool passwordVisiblemain=false;
+  bool passwordVisiblemain = false;
   late Blocusage _blocusage;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    passwordVisiblemain=true;
-    _blocusage=BlocProvider.of<Blocusage>(context);
+    passwordVisiblemain = true;
+    _blocusage = BlocProvider.of<Blocusage>(context);
     _blocusage.add(Userauthenticationevent());
-    AppLifecycleObserver _lifecycle=AppLifecycleObserver();
-    WidgetsBinding.instance?.addObserver(_lifecycle);
+    AddchatDetails _add = AddchatDetails();
+    _add.AddStatus('true');
+    WidgetsBinding.instance?.addObserver(AppLifecycleObserver());
   }
+
   @override
   Widget build(BuildContext context) {
-    final Height=MediaQuery.of(context).size.height;
-    final Width=MediaQuery.of(context).size.width;
+    final Height = MediaQuery.of(context).size.height;
+    final Width = MediaQuery.of(context).size.width;
 
-    return
-      BlocBuilder<Blocusage,AppStates>(
-          builder: (context,state){
-          if(state is Pageloading){
-           return Container(
-             width: 150,
-               height: 150,
-             decoration: BoxDecoration(
-               color: Colors.grey[350],
-               borderRadius: BorderRadius.circular(10),
-             ),
-             child: Center(
-               child: CircularProgressIndicator(
-                 color: Colors.white,
-               ),
-             ),
-           );
-          }
-          if(state is UserloginedState){
-            return Homepage(noticount: state.noticount, index: 0,);
-          }
-        if(state is UserlogoutSate){
-          return LoginPage();
-        }
+    return BlocBuilder<Blocusage, AppStates>(builder: (context, state) {
+      if (state is Pageloading) {
         return Container(
-          height: Height,
-          width: Width,
-          color: Colors.white,);
-        }
+          width: 150,
+          height: 150,
+          decoration: BoxDecoration(
+            color: Colors.grey[350],
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Center(
+            child: CircularProgressIndicator(
+              color: Colors.white,
+            ),
+          ),
+        );
+      }
+      if (state is UserloginedState) {
+        return Homepage(
+          noticount: state.noticount,
+          index: 0,
+        );
+      }
+      if (state is UserlogoutSate) {
+        return LoginPage();
+      }
+      return Container(
+        height: Height,
+        width: Width,
+        color: Colors.white,
       );
+    });
   }
 }
-
