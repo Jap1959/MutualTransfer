@@ -54,12 +54,11 @@ import 'package:connect2prof/usermodel/PostUploadDatamodel.dart';
         return data;
       }
     }
-    Future<List<PostdataModel>> DataForProfilePage() async {
+    Future<List<PostdataModel>> DataForProfilePage(String uid) async {
       CollectionReference post = FirebaseFirestore.instance.collection('Post');
       List<PostdataModel> data = [];
       try {
         QuerySnapshot snapshot = await post.get();
-        final uid = FirebaseAuth.instance.currentUser?.uid;
         for (var doc in snapshot.docs) {
           Map<String, dynamic>? docData = doc.data() as Map<String, dynamic>?;
           if (docData != null && docData['PostedByUserid'] == uid.toString()) {
@@ -86,9 +85,8 @@ import 'package:connect2prof/usermodel/PostUploadDatamodel.dart';
         return data;
       }
     }
-    Future<UserDatamodel> Currentuser() async {
+    Future<UserDatamodel> Currentuser(String uid) async {
       final userdatamodeltemp =UserDatamodel(Name: '', Email: '', currentplace: '', Mobile_no: '', Profilepic: '', Proffession: '', is_online: '', LastSeen: '', uid: '');
-      final uid=FirebaseAuth.instance.currentUser?.uid;
       DocumentSnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance
           .collection('Users')
           .doc(uid)

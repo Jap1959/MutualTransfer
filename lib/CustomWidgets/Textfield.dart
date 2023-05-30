@@ -32,6 +32,7 @@ class _TextfieldAppState extends State<TextfieldApp> {
         controller: widget.Email,
         cursorColor: Colors.black,
         focusNode: widget.focusnode,
+        keyboardType: TextInputType.multiline,
         enableSuggestions: true,
         decoration: InputDecoration(
           hintText: widget.HintText,

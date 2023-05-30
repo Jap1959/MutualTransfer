@@ -7,6 +7,7 @@ import 'package:connect2prof/pages/DetailsPage.dart';
 import 'package:connect2prof/pages/Homepage.dart';
 import 'package:connect2prof/pages/ProfileEditPage.dart';
 import 'package:connect2prof/usermodel/usermodel.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -35,7 +36,8 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
     super.initState();
-    _profile.add(ProfilePageEvent());
+    final uid=FirebaseAuth.instance.currentUser?.uid;
+    _profile.add(ProfilePageEvent(uid.toString()));
   }
 
   @override
@@ -100,7 +102,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                     GestureDetector(
                                       onTap: () async {
                                         GetData _getdata = GetData();
-                                        final user = await _getdata.Currentuser();
+                                        final uid=FirebaseAuth.instance.currentUser?.uid;
+                                        final user = await _getdata.Currentuser(uid.toString());
                                         print(user);
                                         Get.to(() =>
                                             ProfileEditPage(Name: user.Name,

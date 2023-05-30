@@ -34,7 +34,13 @@ class MessagesPageEvent extends AppEvent{
   List<Object> get props=>[];
 }
 class ProfilePageEvent extends AppEvent{
+  String uid;
+  ProfilePageEvent(this.uid);
   List<Object> get props=>[];
+}
+class ProfileotherPageEvent extends AppEvent{
+  String uid;
+  ProfileotherPageEvent(this.uid);
 }
 class LoginPageEvent extends AppEvent{
    final String Email;

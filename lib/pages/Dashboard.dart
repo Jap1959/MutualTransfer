@@ -2,9 +2,13 @@
 import 'package:connect2prof/CustomWidgets/PostDesign.dart';
 import 'package:connect2prof/CustomWidgets/Serachbar.dart';
 import 'package:connect2prof/databaseservices/Adddata.dart';
+import 'package:connect2prof/pages/ProfileForOtherUser.dart';
+import 'package:connect2prof/pages/ProfilePage.dart';
+import 'package:connect2prof/pages/SinglePostPage.dart';
 import 'package:connect2prof/pages/chatInterface.dart';
 import 'package:connect2prof/usermodel/PostUploadDatamodel.dart';
 import 'package:connect2prof/usermodel/PostdataModel.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart' ;
@@ -120,13 +124,17 @@ class _DashboardState extends State<Dashboard> with AutomaticKeepAliveClientMixi
                       itemBuilder: (BuildContext context, int index) {
                         return ListTile(
                           title: GestureDetector(
-                            onTap: () {},
+                            onTap: () {
+                              Get.to(()=>SinglePostPage(Name: Users[index].Name, Proffesion: Users[index].Proffession, Profilepic: Users[index].Profilepic, CurrentPlace: Users[index].CurrentPlace, Mobile: Users[index].MobileNo, DestinationPlace: Users[index].DestinationPlace, decription: Users[index].description));
+                            },
                             child: PostDesign(
                               CurrentPlace: Searchresults[index].CurrentPlace,
                               DestinationPlace: Searchresults[index].DestinationPlace,
                               decription: Searchresults[index].description,
                               Mobile: Searchresults[index].MobileNo, url: Searchresults[index].Profilepic, Name: Searchresults[index].Name, Proffesion: Searchresults[index].Proffession, onTap: (){
                               _blochomepage.add(MessageEvent(Users[index].PostedByUserid));
+                            }, ProfileTap: () {
+                                Get.to(()=>ProfileForOther(uid: Searchresults[index].PostedByUserid,Mobile:Users[index].MobileNo));
                             },
                             ),
                           ),
@@ -203,13 +211,22 @@ class _DashboardState extends State<Dashboard> with AutomaticKeepAliveClientMixi
                         itemBuilder: (BuildContext context, int index) {
                           return ListTile(
                             title: GestureDetector(
-                              onTap: () {},
+                              onTap: () {
+                                Get.to(()=>SinglePostPage(Name: Users[index].Name, Proffesion: Users[index].Proffession, Profilepic: Users[index].Profilepic, CurrentPlace: Users[index].CurrentPlace, Mobile: Users[index].MobileNo, DestinationPlace: Users[index].DestinationPlace, decription: Users[index].description));
+                              },
                               child: PostDesign(
                                 CurrentPlace: Users[index].CurrentPlace,
                                 DestinationPlace: Users[index].DestinationPlace,
                                 decription: Users[index].description,
                                 Mobile: Users[index].MobileNo, url: Users[index].Profilepic, Name: Users[index].Name, Proffesion:Users[index].Proffession, onTap:(){
                               _blochomepage.add(MessageEvent(Users[index].PostedByUserid));
+                              }, ProfileTap: () {
+                                  final uid=FirebaseAuth.instance.currentUser?.uid;
+                                  if(uid==Users[index].PostedByUserid){
+                                    Get.to(()=>Homepage(noticount: 0, index: 2));
+                                  }
+                                  else
+                                  Get.to(()=>ProfileForOther(uid:Users[index].PostedByUserid,Mobile:Users[index].MobileNo));
                               },
                               ),
                             ),

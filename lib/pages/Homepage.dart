@@ -31,10 +31,6 @@ class Homepage extends StatefulWidget {
   State<Homepage> createState() => _HomepageState();
 }
 
-final apikey = 'nk32j37dgyqb';
-final usertoken =
-    'wpf3wqev345djzptrqu46ksp5454gkay6beprwazkuy2jcubr7g6kf9sdd7shuga';
-
 class _HomepageState extends State<Homepage> {
   int _selectedIndex = 0;
 
@@ -43,6 +39,13 @@ class _HomepageState extends State<Homepage> {
     Chatroom(),
     ProfilePage(),
   ];
+
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+     _selectedIndex=widget.index;
+  }
+
   Future<void> _onItemTapped(int index) async {
     setState(() {
       widget.index = index;
@@ -52,7 +55,6 @@ class _HomepageState extends State<Homepage> {
 
   @override
   Widget build(BuildContext context) {
-    _selectedIndex = widget.index;
     final Height = MediaQuery.of(context).size.height;
     final Width = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -83,18 +85,9 @@ class _HomepageState extends State<Homepage> {
             )
           : _selectedIndex == 0
               ? AppBar(
-                  leading: Padding(
-                    padding: const EdgeInsets.fromLTRB(6.0, 15, 0.0, 10),
-                    child: Text(
-                      "MTF",
-                      maxLines: 1,
-                      style: TextStyle(
-                        color: kPrimary,
-                        fontFamily: 'MonoRoboto',
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                      ),
-                    ),
+                  leading: const Padding(
+                    padding:  EdgeInsets.fromLTRB(6.0, 15, 0.0, 10),
+                    child:  Image(image: AssetImage('assets/images/Logo.png'),),
                   ),
                   title: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
@@ -141,6 +134,7 @@ class _HomepageState extends State<Homepage> {
               : AppBar(
                   backgroundColor: Colors.white,
                   elevation: 0.0,
+        automaticallyImplyLeading: false,
                   title: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
@@ -152,7 +146,7 @@ class _HomepageState extends State<Homepage> {
                             fontFamily: 'MonoRoboto'),
                       ),
                       SizedBox(
-                        width: Width * 0.50,
+                        width: Width * 0.64,
                       ),
                       GestureDetector(
                           onTap: () {
@@ -189,17 +183,17 @@ class _HomepageState extends State<Homepage> {
           BottomNavigationBarItem(
               label: "Home",
               icon: Icon(
-                Icons.home_outlined,
+                Icons.home_filled,
               )),
           BottomNavigationBarItem(
               label: "Chat",
               icon: Icon(
-                Icons.messenger_outline,
+                Icons.message,
               )),
           BottomNavigationBarItem(
               label: "Profile",
               icon: Icon(
-                Icons.person_2_outlined,
+                Icons.person,
               )),
         ],
         showSelectedLabels: true,

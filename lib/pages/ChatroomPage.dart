@@ -1,6 +1,8 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connect2prof/CustomWidgets/Textfield.dart';
+import 'package:connect2prof/UsersData/UsersData.dart';
 import 'package:connect2prof/bloc/BlocChatRoomPage.dart';
 import 'package:connect2prof/bloc/events.dart';
 import 'package:connect2prof/databaseservices/AddchatRoomDetails.dart';
@@ -13,6 +15,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:intl/intl.dart';
 
 import '../CustomWidgets/Colors.dart';
 import '../bloc/statesofapp.dart';
@@ -22,11 +25,12 @@ class ChatRoomPage extends StatefulWidget {
       {required this.Proffesion,
       required this.url,
       required this.Name,
-      required this.uid});
+      required this.uid,required this.reuid});
   String Name;
   String Proffesion;
   String url;
   String uid;
+  String reuid;
 
   @override
   State<ChatRoomPage> createState() => _ChatRoomPageState();
@@ -35,6 +39,7 @@ class ChatRoomPage extends StatefulWidget {
 class _ChatRoomPageState extends State<ChatRoomPage> {
   late TextEditingController messagecontroller;
   late FocusNode _messageFocusNode;
+  List<MessageDatamodel> _list=[];
 
   GetChatData _chat = GetChatData();
   @override
@@ -59,111 +64,137 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
         appBar: AppBar(
           backgroundColor: kPrimary,
           elevation: 0.0,
-          title: Row(
-            children: [
-              CircleAvatar(
-                radius: 20,
-                backgroundColor: Colors.grey[100],
-                backgroundImage: NetworkImage(widget.url),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      widget.Name,
-                      style: TextStyle(
-                          fontSize: 20,
-                          color: Colors.white,
-                          fontFamily: 'MonoRoboto'),
+          title: StreamBuilder<
+              DocumentSnapshot<Map<String, dynamic>>>(
+              stream: FirebaseFirestore.instance
+                  .collection('Users')
+                  .doc(widget.reuid.trim())
+                  .snapshots(),
+              builder: (BuildContext context,
+                  AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>>
+                  snapshot) {
+                GetChatData _chat = GetChatData();
+
+                if(snapshot.connectionState==ConnectionState.waiting){
+                   return SizedBox();
+                }
+                final userData = snapshot.data?.data();
+                DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(int.parse(userData!['Lastseen']));
+                final Tag=_chat.formatTimestamp(int.parse(userData!['Lastseen']));
+                final Lastseen = DateFormat('h:mm a').format(dateTime);
+              return Row(
+                children: [
+                  CircleAvatar(
+                    radius: 20,
+                    backgroundColor: Colors.grey[100],
+                    backgroundImage: NetworkImage(
+                        userData!['Profilepic']),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          userData!['Name'],
+                          style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.white,
+                              fontFamily: 'MonoRoboto'),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: Text(
+                            userData['is_online']=='true'?'online':'$Tag $Lastseen',
+                            style: TextStyle(
+                                fontSize: 10,
+                                color: Colors.white,
+                                fontFamily: 'MonoRoboto'),
+                          ),
+                        ),
+                      ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(0.0),
-                      child: Text(
-                        widget.Proffesion,
-                        style: TextStyle(
-                            fontSize: 10,
-                            color: Colors.white,
-                            fontFamily: 'MonoRoboto'),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
+                  ),
+                ],
+              );
+            }
           ),
         ),
         body: Column(
           children: [
             Expanded(
-              child: StreamBuilder<List<MessageDatamodel>>(
-                  stream: _chat.GetChats(widget.uid).asStream(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData == false) {
-                      return Center(
-                        child: Text('Say Hii'),
-                      );
-                    }
-                    List<MessageDatamodel> MessageList = snapshot.data!;
-                    print(MessageList.length);
-                    return Container(
-                        height: Height * .4,
-                        width: Width,
-                        child: ListView.builder(
-                            itemCount: MessageList.length,
-                            itemBuilder: (context, int index) {
-                              final uid =
-                                  FirebaseAuth.instance.currentUser?.uid;
-                              return MessageList[index].PostedByUserid == uid
-                                  ? Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Container(
-                                          constraints: BoxConstraints(
-                                            maxHeight: 200,
-                                            maxWidth: 200,
-                                          ),
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(15),
-                                              color: Colors.grey[200]),
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(15),
-                                            child: Text(
-                                                MessageList[index].message),
-                                          ),
+              child: StreamBuilder<QuerySnapshot>(
+                stream: FirebaseFirestore.instance
+                    .collection('Chatroom')
+                    .doc(widget.uid).collection('Message').orderBy('Date', descending: true).snapshots(),
+                builder: (BuildContext context, snapshot) {
+                  switch (snapshot.connectionState) {
+                  //if data is loading
+                    case ConnectionState.waiting:
+                    case ConnectionState.none:
+                      return const SizedBox();
+
+                  //if some or all data is loaded then show it
+                    case ConnectionState.active:
+                    case ConnectionState.done:
+                    final List<DocumentSnapshot> documents = snapshot.data!.docs;
+                    GetChatData _chat=GetChatData();
+                     final messageMap=_chat.OrderChatData(documents);
+                      if (messageMap.length!=0) {
+                        return ListView.builder(
+                          reverse: true,
+                          itemCount: messageMap.length,
+                          itemBuilder: (context, index) {
+                            final key = messageMap.keys.elementAt(index);
+                            final List<MessageDatamodel>? messages = messageMap[key];
+                            final uid=FirebaseAuth.instance.currentUser?.uid;
+                            return Column(
+                              children: [
+                                Align(
+                                    alignment: Alignment.center,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Container(
+                                        constraints: BoxConstraints(
+                                          maxHeight: 200,
+                                          maxWidth: 200,
+                                        ),
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                            BorderRadius.circular(3),
+                                            color: Colors.blue[100]),
+                                        child: Padding(
+                                          padding:
+                                          const EdgeInsets.all(3),
+                                          child: Text(
+                                              key),
                                         ),
                                       ),
-                                    )
-                                  : MessageList[index].PostedByUserid ==
-                                          'System'
-                                      ? Align(
-                                          alignment: Alignment.center,
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Container(
-                                              constraints: BoxConstraints(
-                                                maxHeight: 200,
-                                                maxWidth: 200,
-                                              ),
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(3),
-                                                  color: Colors.blue[100]),
+                                    )), // Display the key (e.g., today, yesterday, etc.)
+                                ListView.builder(
+                                  reverse: true,
+                                  shrinkWrap: true,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  itemCount: messages!.length,
+                                  itemBuilder: (context, index) {
+                                    final message = messages[index];
+                                    // Build your UI for each message
+                                    return message.PostedByUserid == uid
+                                        ? Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Align(
+                                              alignment: Alignment.centerLeft,
                                               child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(3),
-                                                child: Text(
-                                                    MessageList[index].message),
+                                                padding: const EdgeInsets.all(8.0),
+
+                                                child:  Text(message.Date),
                                               ),
                                             ),
-                                          ))
-                                      : Align(
-                                          alignment: Alignment.centerRight,
-                                          child: Padding(
+                                            Align(
+                                      alignment: Alignment.centerRight,
+                                      child: Padding(
                                             padding: const EdgeInsets.all(8.0),
                                             child: Container(
                                               constraints: BoxConstraints(
@@ -172,19 +203,93 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                                               ),
                                               decoration: BoxDecoration(
                                                   borderRadius:
-                                                      BorderRadius.circular(15),
+                                                  BorderRadius.circular(15),
                                                   color: kPrimary),
                                               child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(15),
+                                                padding: const EdgeInsets.all(15),
                                                 child: Text(
-                                                    MessageList[index].message),
+                                                    message.message),
                                               ),
                                             ),
-                                          ));
-                            }));
-                  }),
+                                      ),
+
+                                    ),
+
+                                          ],
+                                        )
+                                        : message.PostedByUserid ==
+                                        'System'
+                                        ? Align(
+                                        alignment: Alignment.center,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Container(
+                                            constraints: BoxConstraints(
+                                              maxHeight: 200,
+                                              maxWidth: 200,
+                                            ),
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                BorderRadius.circular(3),
+                                                color: Colors.blue[100]),
+                                            child: Padding(
+                                              padding:
+                                              const EdgeInsets.all(3),
+                                              child: Text(
+                                                  message.message),
+                                            ),
+                                          ),
+                                        ))
+                                        : Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Align(
+                                            alignment: Alignment.centerRight,
+                                            child: Padding(
+                                                padding: const EdgeInsets.all(8.0),
+                                                child: Container(
+                                                  constraints: BoxConstraints(
+                                                    maxHeight: 200,
+                                                    maxWidth: 200,
+                                                  ),
+                                                  decoration: BoxDecoration(
+                                                      borderRadius:
+                                                      BorderRadius.circular(15),
+                                                      color: Colors.grey[100]),
+                                                  child: Padding(
+                                                    padding:
+                                                    const EdgeInsets.all(15),
+                                                    child: Text(message.message),
+                                                  ),
+                                                ))),
+                                            Align(
+                                              alignment: Alignment.centerLeft,
+                                              child: Padding(
+                                                padding: const EdgeInsets.all(8.0),
+
+                                                child:  Text(message.Date),
+                                              ),
+                                            ),
+
+                                          ],
+                                        );
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      } else {
+                        return const Center(
+                          child: Text('Say Hii! 👋',
+                              style: TextStyle(fontSize: 20)),
+                        );
+                      }
+                  }
+                },
+              ),
             ),
+
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
@@ -213,7 +318,6 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                         AddchatDetails _add = AddchatDetails();
                         await _add.Addmessage(message, widget.uid);
                         messagecontroller.clear();
-                        _messageFocusNode.unfocus();
                       }
                     },
                     child: Icon(

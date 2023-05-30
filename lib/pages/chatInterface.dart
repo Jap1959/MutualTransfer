@@ -1,546 +1,266 @@
-// import 'dart:io';
-//
-// import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:connect2prof/CustomWidgets/Colors.dart';
-// import 'package:connect2prof/CustomWidgets/Serachbar.dart';
-// import 'package:connect2prof/bloc/events.dart';
-// import 'package:connect2prof/databaseservices/Streamdata.dart';
-// import 'package:connect2prof/pages/ChannelPage.dart';
-// import 'package:connect2prof/pages/ChatroomPage.dart';
-// import 'package:connect2prof/pages/Homepage.dart';
-// import 'package:connect2prof/usermodel/usermodel.dart';
+// import 'package:connect2prof/databaseservices/GetChatData.dart';
+// import 'package:connect2prof/usermodel/MessageDatamodel.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
 // import 'package:flutter/cupertino.dart';
 // import 'package:flutter/material.dart';
-// import 'package:flutter_bloc/flutter_bloc.dart';
-// import 'package:get/get.dart';
-// import 'package:get/get_core/src/get_main.dart';
 //
-// import '../bloc/ChatPageBLoc.dart';
-// import '../bloc/statesofapp.dart';
+// import '../CustomWidgets/Colors.dart';
+// import '../databaseservices/AddchatRoomDetails.dart';
 //
-// class ChatInterface extends StatefulWidget {
+// class ChatScreen extends StatefulWidget {
+//   final uid,Proffesion,Name,url;
+//
+//   const ChatScreen({super.key, required this.uid,required this.Proffesion,required this.Name,required this.url});
+//
 //   @override
-//   State<ChatInterface> createState() => _ChatInterfaceState();
+//   State<ChatScreen> createState() => _ChatScreenState();
 // }
 //
-// class _ChatInterfaceState extends State<ChatInterface> {
-//   TextEditingController search = new TextEditingController();
-//   BlocChatPage _blocChatPage = BlocChatPage();
-//   @override
-//   void initState() {
-//     _blocChatPage.add(ChatLoadEvent());
-//     super.initState();
-//   }
+// class _ChatScreenState extends State<ChatScreen> {
+//   //for storing all messages
+//   List<MessageDatamodel> _list = [];
+//
+//   //for handling message text changes
+//   final _textController = TextEditingController();
+//   GetChatData _chat=GetChatData();
+//
+//   //showEmoji -- for storing value of showing or hiding emoji
+//   //isUploading -- for checking if image is uploading or not?
+//   bool _showEmoji = false, _isUploading = false;
 //
 //   @override
 //   Widget build(BuildContext context) {
-//     final Height = MediaQuery.of(context).size.height;
-//     final Width = MediaQuery.of(context).size.width;
-//     return BlocBuilder<BlocChatPage, AppStates>(
-//         bloc: _blocChatPage,
-//         builder: (context, state) {
-//           if (state is ChatLoadState) {
-//             return Center(
-//               child: CircularProgressIndicator(
-//                 color: kPrimary,
-//               ),
-//             );
-//           }
-//           if (state is SearchResultStateforchat) {
-//             List<UserDatamodel> results = state.Data;
-//             return SingleChildScrollView(
-//               child: Column(
+//     final Height=MediaQuery.of(context).size.height;
+//     return GestureDetector(
+//       onTap: () => FocusScope.of(context).unfocus(),
+//       child: SafeArea(
+//         child: WillPopScope(
+//           //if emojis are shown & back button is pressed then hide emojis
+//           //or else simple close current screen on back button click
+//           onWillPop: () {
+//             if (_showEmoji) {
+//               setState(() => _showEmoji = !_showEmoji);
+//               return Future.value(false);
+//             } else {
+//               return Future.value(true);
+//             }
+//           },
+//           child: Scaffold(
+//             //app bar
+//             appBar: AppBar(
+//               backgroundColor: kPrimary,
+//               elevation: 0.0,
+//               title: Row(
 //                 children: [
-//                   Padding(
-//                     padding: const EdgeInsets.all(8.0),
-//                     child: Container(
-//                       width: 550,
-//                       height: 45,
-//                       decoration: BoxDecoration(
-//                         borderRadius: BorderRadius.circular(10),
-//                         color: Colors.white,
-//                       ),
-//                       child: TextFormField(
-//                         controller: search,
-//                         cursorColor: Colors.black,
-//                         enableSuggestions: true,
-//                         decoration: InputDecoration(
-//                           contentPadding: EdgeInsets.fromLTRB(0.0, 10, 0.0, 10),
-//                           hintText: 'Search firends',
-//                           hintStyle: TextStyle(color: Colors.white),
-//                           prefixIcon: Icon(
-//                             Icons.search,
-//                             color: Colors.black,
-//                           ),
-//                           suffixIcon: Icon(
-//                             Icons.mic,
-//                             color: Colors.black,
-//                           ),
-//                           border: OutlineInputBorder(
-//                             borderSide: BorderSide.none,
-//                             borderRadius: BorderRadius.circular(15),
-//                           ),
-//                           focusedBorder: OutlineInputBorder(
-//                             borderSide: BorderSide.none,
-//                             borderRadius: BorderRadius.circular(15),
-//                           ),
-//                           focusColor: Colors.black,
-//                         ),
-//                         onChanged: (value) {
-//                           _blocChatPage.add(SearchEvent(value.toString()));
-//                         },
-//                       ),
-//                     ),
+//                   CircleAvatar(
+//                     radius: 20,
+//                     backgroundColor: Colors.grey[100],
+//                     backgroundImage: NetworkImage(widget.url),
 //                   ),
-//                   Container(
-//                     height: 400,
-//                     width: double.infinity,
-//                     child: results.length == 0
-//                         ? Center(
-//                             child: Text(
-//                               'No results',
-//                               style: TextStyle(
-//                                   fontSize: 20,
-//                                   color: kPrimary,
-//                                   fontFamily: 'MonoRoboto'),
-//                             ),
-//                           )
-//                         : ListView.builder(
-//                             itemCount: results.length,
-//                             itemBuilder: (BuildContext context, int index) {
-//                               return ListTile(
-//                                 title: GestureDetector(
-//                                   onTap: () {
-//                                     Get.to(() => ChatRoomPage(
-//                                         Proffesion: results[index].Proffession,
-//                                         url: results[index].Profilepic,
-//                                         Name: results[index].Name,
-//                                         uid: results[index].uid));
-//                                   },
-//                                   child: Container(
-//                                     width: 1000,
-//                                     height: 100,
-//                                     decoration: BoxDecoration(
-//                                       color: Colors.white,
-//                                       borderRadius: BorderRadius.circular(20),
-//                                     ),
-//                                     child: Padding(
-//                                       padding: const EdgeInsets.all(15.0),
-//                                       child: Row(
-//                                         mainAxisAlignment:
-//                                             MainAxisAlignment.start,
-//                                         crossAxisAlignment:
-//                                             CrossAxisAlignment.stretch,
-//                                         children: [
-//                                           Stack(
-//                                             children: [
-//                                               CircleAvatar(
-//                                                 radius: 30,
-//                                                 backgroundColor:
-//                                                     Colors.grey[100],
-//                                                 backgroundImage: NetworkImage(
-//                                                     results[index].Profilepic),
-//                                               ),
-//                                               CircleAvatar(
-//                                                 radius: 5,
-//                                                 backgroundColor: results[index]
-//                                                             .is_online ==
-//                                                         'true'
-//                                                     ? Colors.lightGreenAccent
-//                                                     : Colors.transparent,
-//                                                 backgroundImage: NetworkImage(
-//                                                     results[index].Profilepic),
-//                                               ),
-//                                             ],
-//                                           ),
-//                                           Padding(
-//                                             padding: const EdgeInsets.all(15.0),
-//                                             child: Column(
-//                                               mainAxisAlignment:
-//                                                   MainAxisAlignment.start,
-//                                               crossAxisAlignment:
-//                                                   CrossAxisAlignment.start,
-//                                               children: [
-//                                                 Text(
-//                                                   results[index].Name,
-//                                                   style: TextStyle(
-//                                                       fontSize: 20,
-//                                                       color: Colors.black,
-//                                                       fontFamily: 'MonoRoboto'),
-//                                                 ),
-//                                                 Padding(
-//                                                   padding:
-//                                                       const EdgeInsets.all(0.0),
-//                                                   child: Text(
-//                                                     results[index].Proffession,
-//                                                     style: TextStyle(
-//                                                         fontSize: 10,
-//                                                         color: Colors.black,
-//                                                         fontFamily:
-//                                                             'MonoRoboto'),
-//                                                   ),
-//                                                 ),
-//                                               ],
-//                                             ),
-//                                           ),
-//                                           SizedBox(
-//                                             width: Width * 0.1,
-//                                           ),
-//                                           Align(
-//                                             alignment: Alignment.topRight,
-//                                             child: Text(
-//                                               results[index].is_online == 'true'
-//                                                   ? 'online'
-//                                                   : results[index].LastSeen,
-//                                               style: TextStyle(
-//                                                   fontSize: 15,
-//                                                   color: Colors.grey[400],
-//                                                   fontFamily: 'MonoRoboto'),
-//                                             ),
-//                                           )
-//                                         ],
-//                                       ),
-//                                     ),
-//                                   ),
-//                                 ),
-//                               );
-//                             },
+//                   Padding(
+//                     padding: const EdgeInsets.all(15.0),
+//                     child: Column(
+//                       mainAxisAlignment: MainAxisAlignment.start,
+//                       crossAxisAlignment: CrossAxisAlignment.start,
+//                       children: [
+//                         Text(
+//                           widget.Name,
+//                           style: TextStyle(
+//                               fontSize: 20,
+//                               color: Colors.white,
+//                               fontFamily: 'MonoRoboto'),
+//                         ),
+//                         Padding(
+//                           padding: const EdgeInsets.all(0.0),
+//                           child: Text(
+//                             widget.Proffesion,
+//                             style: TextStyle(
+//                                 fontSize: 10,
+//                                 color: Colors.white,
+//                                 fontFamily: 'MonoRoboto'),
 //                           ),
+//                         ),
+//                       ],
+//                     ),
 //                   ),
 //                 ],
 //               ),
-//             );
-//           }
-//           if (state is ChatLoadedState) {
-//             List<UserDatamodel> users = state.data;
-//             return SingleChildScrollView(
-//               child: Column(
-//                 children: [
-//                   Padding(
-//                     padding: const EdgeInsets.all(8.0),
-//                     child: Container(
-//                       width: 550,
-//                       height: 45,
-//                       decoration: BoxDecoration(
-//                         borderRadius: BorderRadius.circular(10),
-//                         color: Colors.white,
-//                       ),
-//                       child: TextFormField(
-//                         controller: search,
-//                         cursorColor: Colors.black,
-//                         enableSuggestions: true,
-//                         decoration: InputDecoration(
-//                           contentPadding: EdgeInsets.fromLTRB(0.0, 10, 0.0, 10),
-//                           hintText: 'Search firends',
-//                           hintStyle: TextStyle(color: Colors.grey[500]),
-//                           prefixIcon: Icon(
-//                             Icons.search,
-//                             color: Colors.black,
-//                           ),
-//                           suffixIcon: Icon(
-//                             Icons.mic,
-//                             color: Colors.black,
-//                           ),
-//                           border: OutlineInputBorder(
-//                             borderSide: BorderSide.none,
-//                             borderRadius: BorderRadius.circular(15),
-//                           ),
-//                           focusedBorder: OutlineInputBorder(
-//                             borderSide: BorderSide.none,
-//                             borderRadius: BorderRadius.circular(15),
-//                           ),
-//                           focusColor: Colors.black,
-//                         ),
-//                         onChanged: (value) {
-//                           _blocChatPage.add(SearchEvent(value.toString()));
-//                         },
-//                       ),
-//                     ),
-//                   ),
-//                   Container(
-//                     height: 400,
-//                     width: double.infinity,
-//                     child: users.length == 0
-//                         ? Center(
-//                             child: Text(
-//                               'No Chats ',
-//                               style: TextStyle(
-//                                   fontSize: 20,
-//                                   color: kPrimary,
-//                                   fontFamily: 'MonoRoboto'),
-//                             ),
-//                           )
-//                         : ListView.builder(
-//                             itemCount: users.length,
-//                             itemBuilder: (BuildContext context, int index) {
-//                               // StreamData streamdata = StreamData();
-//                               return StreamBuilder<List<String>>(
-//                                   stream: ,
-//                                   builder: (context, snapshot) {
-//                                     print(users[index].uid);
-//                                     if (snapshot.hasError) {
-//                                       return Text('Error: ${snapshot.error}');
-//                                     }
+//             ),
 //
-//                                     if (snapshot.connectionState ==
-//                                         ConnectionState.waiting) {
-//                                       return CircularProgressIndicator();
-//                                     }
-//                                     List<String> data = snapshot.data!;
-//                                     if (snapshot == null) {
-//                                       return ListTile(
-//                                         title: GestureDetector(
-//                                           onTap: () {
-//                                             Get.to(() => ChatRoomPage(
-//                                                   Proffesion:
-//                                                       users[index].Proffession,
-//                                                   url: users[index].Profilepic,
-//                                                   Name: users[index].Name,
-//                                                   uid: users[index].uid,
-//                                                 ));
-//                                           },
-//                                           child: Container(
-//                                             width: 1000,
-//                                             height: 100,
-//                                             decoration: BoxDecoration(
-//                                               color: Colors.white,
+//             backgroundColor: Colors.white,
+//
+//             //body
+//             body: Column(
+//               children: [
+//                 Expanded(
+//                   child: StreamBuilder(
+//                     stream: _chat.GetChats(widget.uid),
+//                     builder: (context, snapshot) {
+//                       switch (snapshot.connectionState) {
+//                       //if data is loading
+//                         case ConnectionState.waiting:
+//                         case ConnectionState.none:
+//                           return const SizedBox();
+//
+//                       //if some or all data is loaded then show it
+//                         case ConnectionState.active:
+//                         case ConnectionState.done:
+//                           _list = snapshot.data!;
+//                           if (_list.isNotEmpty) {
+//                             return ListView.builder(
+//                                 reverse: true,
+//                                 itemCount: _list.length,
+//                                 padding: EdgeInsets.only(top: Height * .01),
+//                                 physics: const BouncingScrollPhysics(),
+//                                 itemBuilder: (context, index) {
+//                                   final uid=FirebaseAuth.instance.currentUser?.uid;
+//                                   return _list[index].PostedByUserid == uid
+//                                       ? Align(
+//                                     alignment: Alignment.centerLeft,
+//                                     child: Padding(
+//                                       padding: const EdgeInsets.all(8.0),
+//                                       child: Container(
+//                                         constraints: BoxConstraints(
+//                                           maxHeight: 200,
+//                                           maxWidth: 200,
+//                                         ),
+//                                         decoration: BoxDecoration(
+//                                             borderRadius:
+//                                             BorderRadius.circular(15),
+//                                             color: Colors.grey[200]),
+//                                         child: Padding(
+//                                           padding: const EdgeInsets.all(15),
+//                                           child: Text(
+//                                               _list[index].message),
+//                                         ),
+//                                       ),
+//                                     ),
+//                                   )
+//                                       : _list[index].PostedByUserid ==
+//                                       'System'
+//                                       ? Align(
+//                                       alignment: Alignment.center,
+//                                       child: Padding(
+//                                         padding: const EdgeInsets.all(8.0),
+//                                         child: Container(
+//                                           constraints: BoxConstraints(
+//                                             maxHeight: 200,
+//                                             maxWidth: 200,
+//                                           ),
+//                                           decoration: BoxDecoration(
 //                                               borderRadius:
-//                                                   BorderRadius.circular(20),
+//                                               BorderRadius.circular(3),
+//                                               color: Colors.blue[100]),
+//                                           child: Padding(
+//                                             padding:
+//                                             const EdgeInsets.all(3),
+//                                             child: Text(
+//                                                 _list[index].message),
+//                                           ),
+//                                         ),
+//                                       ))
+//                                       : Align(
+//                                       alignment: Alignment.centerRight,
+//                                       child: Padding(
+//                                           padding: const EdgeInsets.all(8.0),
+//                                           child: Container(
+//                                             constraints: BoxConstraints(
+//                                               maxHeight: 200,
+//                                               maxWidth: 200,
 //                                             ),
+//                                             decoration: BoxDecoration(
+//                                                 borderRadius:
+//                                                 BorderRadius.circular(15),
+//                                                 color: kPrimary),
 //                                             child: Padding(
 //                                               padding:
-//                                                   const EdgeInsets.all(15.0),
-//                                               child: Row(
-//                                                 mainAxisAlignment:
-//                                                     MainAxisAlignment.start,
-//                                                 crossAxisAlignment:
-//                                                     CrossAxisAlignment.stretch,
-//                                                 children: [
-//                                                   Stack(
-//                                                     children: [
-//                                                       CircleAvatar(
-//                                                         radius: 30,
-//                                                         backgroundColor:
-//                                                             Colors.grey[100],
-//                                                         backgroundImage:
-//                                                             NetworkImage(users[
-//                                                                     index]
-//                                                                 .Profilepic),
-//                                                       ),
-//                                                       Positioned(
-//                                                         right: 7,
-//                                                         bottom: 10,
-//                                                         child: CircleAvatar(
-//                                                           radius: 7,
-//                                                           backgroundColor: users[
-//                                                                           index]
-//                                                                       .is_online ==
-//                                                                   'true'
-//                                                               ? Colors
-//                                                                   .lightGreenAccent
-//                                                               : Colors
-//                                                                   .transparent,
-//                                                         ),
-//                                                       ),
-//                                                     ],
-//                                                   ),
-//                                                   Padding(
-//                                                     padding:
-//                                                         const EdgeInsets.all(
-//                                                             15.0),
-//                                                     child: Column(
-//                                                       mainAxisAlignment:
-//                                                           MainAxisAlignment
-//                                                               .start,
-//                                                       crossAxisAlignment:
-//                                                           CrossAxisAlignment
-//                                                               .start,
-//                                                       children: [
-//                                                         Text(
-//                                                           users[index].Name,
-//                                                           style: TextStyle(
-//                                                               fontSize: 20,
-//                                                               color:
-//                                                                   Colors.black,
-//                                                               fontFamily:
-//                                                                   'MonoRoboto'),
-//                                                         ),
-//                                                         Padding(
-//                                                           padding:
-//                                                               const EdgeInsets
-//                                                                   .all(0.0),
-//                                                           child: Text(
-//                                                             users[index]
-//                                                                 .Proffession,
-//                                                             style: TextStyle(
-//                                                                 fontSize: 10,
-//                                                                 color: Colors
-//                                                                     .black,
-//                                                                 fontFamily:
-//                                                                     'MonoRoboto'),
-//                                                           ),
-//                                                         ),
-//                                                       ],
-//                                                     ),
-//                                                   ),
-//                                                   SizedBox(
-//                                                     width: Width * 0.1,
-//                                                   ),
-//                                                   Align(
-//                                                     alignment:
-//                                                         Alignment.topRight,
-//                                                     child: Text(
-//                                                       users[index].is_online ==
-//                                                               'true'
-//                                                           ? 'online'
-//                                                           : users[index]
-//                                                               .LastSeen,
-//                                                       style: TextStyle(
-//                                                           fontSize: 10,
-//                                                           color:
-//                                                               Colors.grey[400],
-//                                                           fontFamily:
-//                                                               'MonoRoboto'),
-//                                                     ),
-//                                                   )
-//                                                 ],
-//                                               ),
+//                                               const EdgeInsets.all(15),
+//                                               child: Text(_list[index].message),
 //                                             ),
-//                                           ),
-//                                         ),
-//                                       );
-//                                     }
-//                                     return ListTile(
-//                                       title: GestureDetector(
-//                                         onTap: () {
-//                                           Get.to(() => ChatRoomPage(
-//                                                 Proffesion:
-//                                                     users[index].Proffession,
-//                                                 url: users[index].Profilepic,
-//                                                 Name: users[index].Name,
-//                                                 uid: users[index].uid,
-//                                               ));
-//                                         },
-//                                         child: Container(
-//                                           width: 1000,
-//                                           height: 100,
-//                                           decoration: BoxDecoration(
-//                                             color: Colors.white,
-//                                             borderRadius:
-//                                                 BorderRadius.circular(20),
-//                                           ),
-//                                           child: Padding(
-//                                             padding: const EdgeInsets.all(15.0),
-//                                             child: Row(
-//                                               mainAxisAlignment:
-//                                                   MainAxisAlignment.start,
-//                                               crossAxisAlignment:
-//                                                   CrossAxisAlignment.stretch,
-//                                               children: [
-//                                                 Stack(
-//                                                   children: [
-//                                                     CircleAvatar(
-//                                                       radius: 30,
-//                                                       backgroundColor:
-//                                                           Colors.grey[100],
-//                                                       backgroundImage:
-//                                                           NetworkImage(
-//                                                               users[index]
-//                                                                   .Profilepic),
-//                                                     ),
-//                                                     Positioned(
-//                                                       right: 7,
-//                                                       bottom: 10,
-//                                                       child: CircleAvatar(
-//                                                         radius: 7,
-//                                                         backgroundColor: data[
-//                                                                         0] ==
-//                                                                     true ||
-//                                                                 users[
-//                                                                             index]
-//                                                                         .is_online ==
-//                                                                     'true'
-//                                                             ? Colors
-//                                                                 .lightGreenAccent
-//                                                             : Colors
-//                                                                 .transparent,
-//                                                       ),
-//                                                     ),
-//                                                   ],
-//                                                 ),
-//                                                 Padding(
-//                                                   padding: const EdgeInsets.all(
-//                                                       15.0),
-//                                                   child: Column(
-//                                                     mainAxisAlignment:
-//                                                         MainAxisAlignment.start,
-//                                                     crossAxisAlignment:
-//                                                         CrossAxisAlignment
-//                                                             .start,
-//                                                     children: [
-//                                                       Text(
-//                                                         users[index].Name,
-//                                                         style: TextStyle(
-//                                                             fontSize: 20,
-//                                                             color: Colors.black,
-//                                                             fontFamily:
-//                                                                 'MonoRoboto'),
-//                                                       ),
-//                                                       Padding(
-//                                                         padding:
-//                                                             const EdgeInsets
-//                                                                 .all(0.0),
-//                                                         child: Text(
-//                                                           users[index]
-//                                                               .Proffession,
-//                                                           style: TextStyle(
-//                                                               fontSize: 10,
-//                                                               color:
-//                                                                   Colors.black,
-//                                                               fontFamily:
-//                                                                   'MonoRoboto'),
-//                                                         ),
-//                                                       ),
-//                                                     ],
-//                                                   ),
-//                                                 ),
-//                                                 SizedBox(
-//                                                   width: Width * 0.1,
-//                                                 ),
-//                                                 Align(
-//                                                   alignment: Alignment.topRight,
-//                                                   child: Text(
-//                                                     data![0] == 'true' ||
-//                                                             users[index]
-//                                                                     .is_online ==
-//                                                                 'true'
-//                                                         ? 'online'
-//                                                         : data[1] != ''
-//                                                             ? data[1]
-//                                                             : users[index]
-//                                                                 .LastSeen,
-//                                                     style: TextStyle(
-//                                                         fontSize: 10,
-//                                                         color: Colors.grey[400],
-//                                                         fontFamily:
-//                                                             'MonoRoboto'),
-//                                                   ),
-//                                                 )
-//                                               ],
-//                                             ),
-//                                           ),
-//                                         ),
-//                                       ),
-//                                     );
-//                                   });
-//                             },
-//                           ),
+//                                           )));
+//                                 });
+//                           } else {
+//                             return const Center(
+//                               child: Text('Say Hii! 👋',
+//                                   style: TextStyle(fontSize: 20)),
+//                             );
+//                           }
+//                       }
+//                     },
 //                   ),
-//                 ],
-//               ),
-//             );
-//           }
-//           return Container();
-//         });
+//                 ),
+//
+//                 //progress indicator for showing uploading
+//                 if (_isUploading)
+//                   const Align(
+//                       alignment: Alignment.centerRight,
+//                       child: Padding(
+//                           padding:
+//                           EdgeInsets.symmetric(vertical: 8, horizontal: 20),
+//                           child: CircularProgressIndicator(strokeWidth: 2))),
+//
+//                 //chat input filed
+//                 _chatInput(),
+//               ],
+//             ),
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+//
+//   Widget _chatInput() {
+//     return Row(
+//       children: [
+//         //input field & buttons
+//         Expanded(
+//           child: Card(
+//             shape: RoundedRectangleBorder(
+//                 borderRadius: BorderRadius.circular(15)),
+//             child: Row(
+//               children: [
+//                 Expanded(
+//                     child: TextField(
+//                       controller: _textController,
+//                       keyboardType: TextInputType.multiline,
+//                       maxLines: null,
+//                       onTap: () {
+//                         if (_showEmoji) setState(() => _showEmoji = !_showEmoji);
+//                       },
+//                       decoration: const InputDecoration(
+//                           hintText: 'Type Something...',
+//                           hintStyle: TextStyle(color: Colors.blueAccent),
+//                           border: InputBorder.none),
+//                     )),
+//               ],
+//             ),
+//           ),
+//         ),
+//
+//         //send message button
+//         MaterialButton(
+//           onPressed: () async {
+//             if (_textController.text.isNotEmpty) {
+//               final uid = FirebaseAuth.instance.currentUser?.uid;
+//               String Time =
+//               DateTime.now().millisecondsSinceEpoch.toString();
+//               MessageDatamodel message = MessageDatamodel(
+//                   PostedByUserid: uid.toString(),
+//                   Date: Time,
+//                   message: _textController.text.toString());
+//               AddchatDetails _add = AddchatDetails();
+//               await _add.Addmessage(message, widget.uid);
+//               _textController.text = '';
+//             }
+//           },
+//           minWidth: 0,
+//           padding:
+//           const EdgeInsets.only(top: 10, bottom: 10, right: 5, left: 10),
+//           shape: const CircleBorder(),
+//           color: Colors.tealAccent,
+//           child: const Icon(Icons.send, color: Colors.white, size: 28),
+//         )
+//       ],
+//     );
 //   }
 // }

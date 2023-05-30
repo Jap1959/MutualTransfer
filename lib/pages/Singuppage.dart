@@ -99,7 +99,7 @@ class _SingupPageState extends State<SingupPage> {
                       padding: const EdgeInsets.fromLTRB(0.0, 40.0, 0.0, 0.0),
                       child: TextfieldApp(Email: Email,
                         HintText: "Enter Your Email",
-                        icon: Icons.email_outlined,
+                        icon: Icons.email_rounded,
                         color: Colors.grey.shade100,),
                     ),
                     Padding(

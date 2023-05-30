@@ -98,7 +98,7 @@ class _LoginPageState extends State<LoginPage> {
                          padding: const EdgeInsets.all(8.0),
                          child: TextfieldApp(Email: Email,
                              HintText: 'Enter your Email',
-                             icon: Icons.email_outlined, color: Colors.grey.shade100,),
+                             icon: Icons.email_rounded, color: Colors.grey.shade100,),
                        ),
                        Padding(
                          padding: const EdgeInsets.all(8.0),

@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class PostDesign extends StatefulWidget {
-  PostDesign({required this.CurrentPlace,required this.DestinationPlace,required this.decription,required this.Mobile, required this.url, required this.Name, required this.Proffesion, required this.onTap});
+  PostDesign({required this.CurrentPlace,required this.DestinationPlace,required this.decription,required this.Mobile, required this.url, required this.Name, required this.Proffesion, required this.onTap, required this.ProfileTap});
   final String CurrentPlace;
   final String DestinationPlace;
   final String url;
@@ -16,6 +16,7 @@ class PostDesign extends StatefulWidget {
   final String Name;
   final String Proffesion;
   final VoidCallback onTap;
+  final VoidCallback ProfileTap;
 
   @override
   State<PostDesign> createState() => _PostDesignState();
@@ -27,8 +28,8 @@ class _PostDesignState extends State<PostDesign> {
     final Width=MediaQuery.of(context).size.width;
     final Height=MediaQuery.of(context).size.height;
     return Container(
-      width: 1200,
-      height: 325,
+      width: Width,
+      height: Height*0.5,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
         color: Colors.white,
@@ -36,31 +37,35 @@ class _PostDesignState extends State<PostDesign> {
       child: Padding(
           padding: const EdgeInsets.all(15.0),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CircleAvatar(
-                    backgroundImage: NetworkImage(widget.url),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(10, 8, 0.0, 0.0),
-                    child: Text(widget.Name,style: TextStyle(fontFamily: 'MonoRoboto',fontSize: 20,fontWeight: FontWeight.bold,color: Colors.black)),
-                  ),
-                  SizedBox(width: Width*0.2,),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 12),
-                    child: Column(
-                      children: [
-                        Text(widget.CurrentPlace,
-                            maxLines: 1,
-                            style: TextStyle(fontFamily: 'MonoRoboto',fontSize: 13,color: Colors.black,)),
-                        Text('CurrentPlace',style: TextStyle(fontFamily: 'MonoRoboto',fontSize: 8,color: kPrimary)),
-                      ],
+              GestureDetector(
+                onTap: widget.ProfileTap,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CircleAvatar(
+                      backgroundImage: NetworkImage(widget.url),
                     ),
-                  )
-                ],
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(10, 8, 0.0, 0.0),
+                      child: Text(widget.Name,style: TextStyle(fontFamily: 'MonoRoboto',fontSize: 20,fontWeight: FontWeight.bold,color: Colors.black)),
+                    ),
+                    SizedBox(width: Width*0.2,),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 12),
+                      child: Column(
+                        children: [
+                          Text(widget.CurrentPlace,
+                              maxLines: 1,
+                              style: TextStyle(fontFamily: 'MonoRoboto',fontSize: 13,color: Colors.black,)),
+                          Text('CurrentPlace',style: TextStyle(fontFamily: 'MonoRoboto',fontSize: 8,color: kPrimary)),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
               ),
               SizedBox(height: Height*0.01,),
               Container(
@@ -68,38 +73,35 @@ class _PostDesignState extends State<PostDesign> {
                 width: Width,
                 color: Colors.grey[300],
               ),
-              Card(
-                shadowColor: Colors.transparent,
-                child: SingleChildScrollView(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
 
-                     Row(
-                       children: [
-                         Text('RequiredPlace',style: TextStyle(fontFamily: 'MonoRoboto',fontSize: 15,color: kPrimary)),
-                         SizedBox(width: Width*0.05,),
-                         Text(widget.DestinationPlace,style: TextStyle(fontFamily: 'MonoRoboto',fontSize: 15,color: Colors.black)),
-                       ],
-                     ),
-                      Row(
-                        children: [
-                          Text('Proffession',style: TextStyle(fontFamily: 'MonoRoboto',fontSize: 15,color: kPrimary)),
-                          SizedBox(width: Width*0.05,),
-                          Text(widget.Proffesion,style: TextStyle(fontFamily: 'MonoRoboto',fontSize: 15,color: Colors.black)),
-                        ],
-                      ),
-                      SizedBox(height: Height*0.01,),
+                   Row(
+                     children: [
+                       Text('RequiredPlace',style: TextStyle(fontFamily: 'MonoRoboto',fontSize: 15,color: kPrimary)),
+                       SizedBox(width: Width*0.05,),
+                       Text(widget.DestinationPlace,style: TextStyle(fontFamily: 'MonoRoboto',fontSize: 15,color: Colors.black)),
+                     ],
+                   ),
+                    Row(
+                      children: [
+                        Text('Proffession',style: TextStyle(fontFamily: 'MonoRoboto',fontSize: 15,color: kPrimary)),
+                        SizedBox(width: Width*0.05,),
+                        Text(widget.Proffesion,style: TextStyle(fontFamily: 'MonoRoboto',fontSize: 15,color: Colors.black)),
+                      ],
+                    ),
+                    SizedBox(height: Height*0.01,),
 
-                      Text(
+                    Expanded(
+                      child: Text(
                         widget.decription,
                         textAlign: TextAlign.center,
-                        maxLines: readMore ? 100 : 9,
-                        overflow: TextOverflow.ellipsis,
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
 
               ),

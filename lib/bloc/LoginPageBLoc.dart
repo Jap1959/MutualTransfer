@@ -27,7 +27,7 @@ class BlocLogin extends Bloc<AppEvent,AppStates>{
         if(User!='[firebase_auth/user-not-found] There is no user record corresponding to this identifier. The user may have been deleted.') {
           emit(LoginSucessState());
           SharedPreferences prefs=await SharedPreferences.getInstance();
-          int? noticount=prefs.getInt('Notification');
+          int? noticount=prefs.getInt('Notification')??0;
           Get.off(()=>Homepage(noticount: noticount!, index: 0,));
         }
         else{

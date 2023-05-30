@@ -154,7 +154,7 @@ class _DetailsPageState extends State<DetailsPage> {
                         ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: TextfieldApp(Email: Proffession, HintText: 'Enter  Proffession', icon: Icons.email_rounded, color: Colors.grey.shade100),
+                          child: TextfieldApp(Email: Proffession, HintText: 'Enter  Proffession', icon: Icons.person, color: Colors.grey.shade100),
                         ),
                        Padding(
                          padding: const EdgeInsets.all(8.0),
@@ -185,7 +185,8 @@ class _DetailsPageState extends State<DetailsPage> {
                               print(image.toString());
                               if(status=='true'){
                                 final uid=FirebaseAuth.instance.currentUser?.uid;
-                                final userDatamodel=UserDatamodel(Name: Name.text.toString(), Email: Email.text.toString(), currentplace: City.text.toString(), Mobile_no: Mobile.text.toString(), Profilepic:image!, Proffession: Proffession.text.toString(), is_online: 'true', LastSeen: '', uid: uid.toString() );
+                                String Time=DateTime.now().millisecondsSinceEpoch.toString();
+                                final userDatamodel=UserDatamodel(Name: Name.text.toString(), Email: Email.text.toString(), currentplace: City.text.toString(), Mobile_no: Mobile.text.toString(), Profilepic:image!, Proffession: Proffession.text.toString(), is_online: 'true', LastSeen: Time, uid: uid.toString() );
                                 _blocAddData.add(AdddataEvent(userDatamodel));
                               }
                               else{

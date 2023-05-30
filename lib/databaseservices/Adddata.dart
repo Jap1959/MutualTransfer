@@ -1,3 +1,5 @@
+
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connect2prof/UsersData/UsersData.dart';
 import 'package:connect2prof/databaseservices/GetData.dart';
@@ -88,21 +90,53 @@ class AddData {
   Future<void> AddChatroom(String recieveruid) async {
     try {
       final uid = FirebaseAuth.instance.currentUser?.uid;
+      recieveruid=recieveruid.trim();
       final Chatid = '${uid}_${recieveruid}';
       final CollectionReference collectionReference2 =
           FirebaseFirestore.instance.collection('Users/$recieveruid/ChatRoom');
+      List<Future<void>> futures = [];
       String Time = DateTime.now().millisecondsSinceEpoch.toString();
-      collectionReference2.doc(Chatid).set({'Datecreated': Time});
-      CollectionReference collectionReference1 =
-          FirebaseFirestore.instance.collection('Users/$uid/ChatRoom');
-      collectionReference1.doc(Chatid).set({'Datecreated': Time});
-      MessageDatamodel message = MessageDatamodel(
-          PostedByUserid: 'System', Date: Time, message: 'Start your chat');
-      await FirebaseFirestore.instance
-          .collection('Chatroom')
-          .doc(Chatid)
-          .collection('Message')
-          .add(message.toMap());
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection('Users')
+          .doc(recieveruid.trim())
+          .collection('ChatRoom')
+          .get();
+      List<QueryDocumentSnapshot> documents = querySnapshot.docs;
+      List<String> documentIds = documents.map((document) => document.id).toList();
+      if(documentIds.contains(Chatid)||documentIds.contains('${recieveruid}_${uid}')){
+        SharedPreferences prefs=await SharedPreferences.getInstance();
+        int? noticount=prefs.getInt('Notification');
+        Get.to(()=>Homepage(noticount: noticount==null?0:noticount, index: 1,));
+        return;
+      }
+        DocumentSnapshot snapshot =
+        await FirebaseFirestore.instance.collection('Users').doc(uid).get();
+        collectionReference2.doc(Chatid).set({
+          'Datecreated': Time,
+          'NameOfReciver': snapshot['Name'],
+          'Chatid': Chatid
+        });
+        CollectionReference collectionReference1 =
+        FirebaseFirestore.instance.collection('Users/$uid/ChatRoom');
+        snapshot = await FirebaseFirestore.instance.collection('Users').doc(
+            recieveruid.trim()).get();
+        collectionReference1.doc(Chatid).set({
+          'Datecreated': Time,
+          'NameOfReciver': snapshot['Name'],
+          'Chatid': Chatid
+        });
+        MessageDatamodel message = MessageDatamodel(
+            PostedByUserid: 'System', Date: Time, message: 'Start your chat');
+        futures.add(FirebaseFirestore.instance
+            .collection('Chatroom')
+            .doc(Chatid)
+            .collection('Message')
+            .add(message.toMap()));
+        await Future.wait(futures);
+      SharedPreferences prefs=await SharedPreferences.getInstance();
+      int? noticount=prefs.getInt('Notification');
+      Get.to(()=>Homepage(noticount: noticount==null?0:noticount, index: 1,));
+
     } catch (e) {
       print(e.toString());
     }

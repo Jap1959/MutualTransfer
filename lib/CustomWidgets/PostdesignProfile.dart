@@ -67,8 +67,7 @@ class _PostProfileDesignState extends State<PostProfileDesign> {
                 width: Width,
                 color: Colors.grey[300],
               ),
-              Card(
-                shadowColor: Colors.transparent,
+              Expanded(
                 child: SingleChildScrollView(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,

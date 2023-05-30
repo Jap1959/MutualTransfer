@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:intl/intl.dart';
 
 import '../usermodel/MessageDatamodel.dart';
 import '../usermodel/usermodel.dart';
@@ -152,65 +153,81 @@ class GetChatData {
       return users;
     }
   }
-
-  Stream<List<MessageDatamodel>> GetChats(String reciveruid) async* {
+  Future<String> GetChatid(String reciveruid) async{
     final uidmain = FirebaseAuth.instance.currentUser?.uid;
+       try{
+         reciveruid = reciveruid.trim();
+         String uid = uidmain.toString().trim();
+         String Chatid = '${uid}_$reciveruid';
+         CollectionReference chatroomCollection = FirebaseFirestore.instance
+             .collection('Chatroom')
+             .doc(Chatid)
+             .collection('Message');
 
-    try {
-      reciveruid = reciveruid.trim();
-      String uid = uidmain.toString().trim();
-      String Chatid = '${uid}_$reciveruid';
-      CollectionReference message1 = FirebaseFirestore.instance
-          .collection('Chatroom')
-          .doc(Chatid)
-          .collection('Message');
-
-      print(Chatid);
-      // Chatid = 'fQxDHhFyAYSKVI3HYiPMN509PkC2_rVelyRblfEVj5CN8hdE8i8a7JTv2';
-      CollectionReference chatroomCollection = FirebaseFirestore.instance
-          .collection('Chatroom')
-          .doc(Chatid)
-          .collection('Message');
-
-      QuerySnapshot snapshot = await chatroomCollection.get();
-      if (snapshot.size != 0) {
-        QuerySnapshot querySnapshot1 = await message1.get();
-        List<MessageDatamodel> messages = [];
-
-        for (DocumentSnapshot doc in querySnapshot1.docs) {
-          MessageDatamodel message = MessageDatamodel(
-            PostedByUserid: doc['PostedByUserid'],
-            Date: doc['Date'],
-            message: doc['message'],
-          );
-          messages.add(message);
-        }
-
-        yield messages;
-      } else {
-        Chatid = '${reciveruid}_$uid';
-        CollectionReference message2 = FirebaseFirestore.instance
-            .collection('Chatroom')
-            .doc(Chatid)
-            .collection('Message');
-
-        QuerySnapshot querySnapshot2 = await message2.get();
-        List<MessageDatamodel> messages = [];
-
-        for (DocumentSnapshot doc in querySnapshot2.docs) {
-          MessageDatamodel message = MessageDatamodel(
-            PostedByUserid: doc['PostedByUserid'],
-            Date: doc['Date'],
-            message: doc['message'],
-          );
-          messages.add(message);
-        }
-
-        yield messages;
+         QuerySnapshot snapshot = await chatroomCollection.get();
+         if(snapshot.size!=0){
+           return Chatid;
+         }
+         else{
+           Chatid = '${reciveruid}_$uid';
+           return Chatid;
+         }
+       }
+       catch(e){
+           return e.toString();
+       }
+  }
+  Map<String, List<MessageDatamodel>> OrderChatData(List<DocumentSnapshot>  docs){
+     Map<String, List<MessageDatamodel>> messages={};
+     for (int i = 0; i < docs.length; i++) {
+       DocumentSnapshot doc = docs[i];
+       Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+       final Time =formatTimestamp(int.parse(data['Date']));
+       DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(int.parse(data['Date']));
+       final mesage=MessageDatamodel(PostedByUserid: data['PostedByUserid'], Date:DateFormat('h:mm a').format(dateTime) , message:data['message']);
+       if(mesage!=null) {
+         messages[Time] ??= [];
+         messages[Time]!.add(mesage);
+       }
+     }
+     return messages;
+   }
+  List<String> filterUsers(QuerySnapshot<Map<String, dynamic>> users, String searchValue) {
+    List<String> userList = [];
+    if(searchValue==''){
+      for (QueryDocumentSnapshot<Map<String, dynamic>> userSnapshot in users.docs) {
+        Map<String, dynamic> userData = userSnapshot.data();
+        userList.add(userData['Chatid']);
       }
-    } catch (e) {
-      print('Error retrieving messages: $e');
-      yield [];
+      return userList;
+    }
+    for (QueryDocumentSnapshot<Map<String, dynamic>> userSnapshot in users.docs) {
+      Map<String, dynamic> userData = userSnapshot.data();
+      String userName = userData['NameOfReciver'];
+
+      // Apply filtering logic based on the search value
+      if (userName.toLowerCase().contains(searchValue.toLowerCase())) {
+        String userId = userData['Chatid'];
+        userList.add(userId);
+      }
+    }
+    return userList;
+  }
+  String formatTimestamp(int timestamp) {
+    DateTime now = DateTime.now();
+    DateTime date = DateTime.fromMillisecondsSinceEpoch(timestamp);
+
+    if (date.year == now.year && date.month == now.month && date.day == now.day) {
+      // Today
+      return 'Today';
+    } else if (date.year == now.year &&
+        date.month == now.month &&
+        date.day == now.day - 1) {
+      // Yesterday
+      return 'Yesterday';
+    } else {
+      // Other dates
+      return '${date.day}/${date.month}/${date.year}';
     }
   }
 }
