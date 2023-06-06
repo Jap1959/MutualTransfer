@@ -1,10 +1,6 @@
 
-import 'package:connect2prof/CustomWidgets/ButtonAPP.dart';
 import 'package:connect2prof/CustomWidgets/PostdesignProfile.dart';
-import 'package:connect2prof/DataTraversal/GetData.dart';
 import 'package:connect2prof/bloc/events.dart';
-import 'package:connect2prof/pages/DetailsPage.dart';
-import 'package:connect2prof/pages/Homepage.dart';
 import 'package:connect2prof/pages/ProfileEditPage.dart';
 import 'package:connect2prof/usermodel/usermodel.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -13,16 +9,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
-import 'package:url_launcher/url_launcher.dart';
-
 import '../CustomWidgets/Colors.dart';
-import '../CustomWidgets/PostDesign.dart';
 import '../bloc/ProfileLoadBloc.dart';
-import '../bloc/ChatPageBLoc.dart';
 import '../bloc/statesofapp.dart';
 import '../databaseservices/GetData.dart';
 import '../usermodel/PostdataModel.dart';
-
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
 
@@ -199,7 +190,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 .DestinationPlace,
                             decription: Users[index-1].description,
                             Mobile: Users[index-1].MobileNo,
-                            url: Users[index-1].Profilepic,
+                            url: userdetails.Profilepic,
                             Name: Users[index-1].Name,
                             Proffesion: Users[index-1].Proffession,
                           ),

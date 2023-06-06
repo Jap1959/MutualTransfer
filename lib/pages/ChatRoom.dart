@@ -118,8 +118,10 @@ class _ChatroomState extends State<Chatroom> {
                     List<String> Parts = userList[index].split('_');
                     String userid;
                     if (Parts[0] != uid) {
+                      print(Parts[0]);
                       userid = Parts[0];
                     } else {
+                      print(Parts[1]);
                       userid = Parts[1];
                     }
                     return StreamBuilder<
@@ -209,7 +211,7 @@ class _ChatroomState extends State<Chatroom> {
                                           CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              userData!['Name'],
+                                              userData!['uid']==uid?'You':userData!['Name'],
                                               style: TextStyle(
                                                   fontSize: 20,
                                                   color: Colors.black,
@@ -230,7 +232,7 @@ class _ChatroomState extends State<Chatroom> {
                                         ),
                                       ),
                                       SizedBox(
-                                        width: Width * 0.1,
+                                        width: userData!['is_online'] == 'true'?Width*0.18:Width * 0.06,
                                       ),
                                       Align(
                                         alignment: Alignment.topRight,

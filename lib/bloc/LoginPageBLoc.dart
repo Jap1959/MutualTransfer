@@ -18,27 +18,19 @@ import 'events.dart';
 class BlocLogin extends Bloc<AppEvent,AppStates>{
   BlocLogin():super(ButtonNotPressedState()){
     on<LoginPageEvent>((event,emit) async {
-      emit(ButtonNotPressedState());
       try {
         emit(ButtonPressedState());
         Authentication _auth = Authentication();
         final User= await _auth.signInWithEmailAndPassword(
             event.Email.toString(), event.password.toString());
-        if(User!='[firebase_auth/user-not-found] There is no user record corresponding to this identifier. The user may have been deleted.') {
-          emit(LoginSucessState());
+        if(User=='true') {
           SharedPreferences prefs=await SharedPreferences.getInstance();
           int? noticount=prefs.getInt('Notification')??0;
-          Get.off(()=>Homepage(noticount: noticount!, index: 0,));
+          emit(LoginSucessState(noticount));
         }
         else{
-          if(User=='[firebase_auth/user-not-found] There is no user record corresponding to this identifier. The user may have been deleted.'){
             emit(ButtonNotPressedState());
-            Get.snackbar("Error", "User Not registered"
-                ,icon: Icon(Icons.close,color: Colors.white,),
-                snackPosition: SnackPosition.TOP,
-                backgroundColor: Colors.red
-            );
-          }
+            emit(LoginUnsucessfullState(User.toString()));
         }
       }
       catch(e){
@@ -59,22 +51,13 @@ class BlocLogin extends Bloc<AppEvent,AppStates>{
               // print(status);
 
               if(status=='true'){
-                Get.snackbar("Message", "Link Send Sucessfully"
-                    ,icon: Icon(Icons.check,color: Colors.white,),
-                    snackPosition: SnackPosition.TOP,
-                    backgroundColor: Colors.green
-                );
                 Authentication _auth=Authentication();
                 _auth.signOut();
-                Get.offAll(()=>LoginPage());
+                emit(LinkSentState());
               }
               else{
                 emit(ButtonNotPressedState());
-                Get.snackbar("Error", "Email is not registred "
-                    ,icon: Icon(Icons.close,color: Colors.white,),
-                    snackPosition: SnackPosition.TOP,
-                    backgroundColor: Colors.red
-                );
+                emit(LoginUnsucessfullState("Email not Registered"));
               }
        }
        catch(e){

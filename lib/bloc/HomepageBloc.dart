@@ -4,18 +4,14 @@
 
 import 'package:connect2prof/CustomWidgets/Colors.dart';
 import 'package:connect2prof/bloc/statesofapp.dart';
-import 'package:connect2prof/pages/Homepage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../databaseservices/Adddata.dart';
 import '../databaseservices/GetData.dart';
-import '../pages/Dashboard.dart';
-import '../pages/chatInterface.dart';
 import '../usermodel/PostdataModel.dart';
 import 'events.dart';
 
@@ -67,8 +63,10 @@ class BlocHompage extends Bloc<AppEvent, AppStates> {
           barrierDismissible: false,
         );
         AddData _adddata=AddData();
-        _adddata.AddChatroom(event.uid);
-
+        await _adddata.AddChatroom(event.uid);
+        SharedPreferences prefs=await SharedPreferences.getInstance();
+        int? noticount=prefs.getInt('Notification');
+        emit(AddedState(noticount==null?0:noticount));
       }
       catch(e){
         print(e.toString());

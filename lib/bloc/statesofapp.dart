@@ -81,9 +81,16 @@ class DataUploadedState extends AppStates {
 
 }
 class LoginSucessState extends AppStates {
-  @override
-  List<Object?> get props => [];
+  int noticount;
+  LoginSucessState(this.noticount);
 
+}
+class LinkSentState extends AppStates{
+
+}
+class AddedState extends AppStates{
+  int notiount;
+  AddedState(this.notiount);
 }
 class SearchingState extends AppStates {
 

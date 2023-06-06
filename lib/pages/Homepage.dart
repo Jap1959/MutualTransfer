@@ -12,6 +12,7 @@ import 'package:connect2prof/pages/PostPage.dart';
 import 'package:connect2prof/pages/ProfilePage.dart';
 import 'package:connect2prof/pages/SettingPage.dart';
 import 'package:connect2prof/pages/chatInterface.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -43,6 +44,7 @@ class _HomepageState extends State<Homepage> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    print(widget.index);
      _selectedIndex=widget.index;
   }
 
@@ -96,13 +98,11 @@ class _HomepageState extends State<Homepage> {
                         padding: const EdgeInsets.fromLTRB(135, 0.0, 0.0, 0.0),
                         child: GestureDetector(
                           onTap: () async {
-                            SharedPreferences prefs =
-                                await SharedPreferences.getInstance();
-                            final Name = prefs.getString('Name');
-                            final Mobile = prefs.getString('Mobile');
-                            final Url = prefs.getString('Url');
+                            final uid=FirebaseAuth.instance.currentUser?.uid;
+                            GetData _get=GetData();
+                            final user=await _get.Currentuser(uid.toString());
                             Get.to(() => PostPage(Mobile.toString(),
-                                Name.toString(), Url.toString()));
+                                user.Name, user.Profilepic));
                           },
                           child: ClipOval(
                               child: Icon(
@@ -146,7 +146,7 @@ class _HomepageState extends State<Homepage> {
                             fontFamily: 'MonoRoboto'),
                       ),
                       SizedBox(
-                        width: Width * 0.64,
+                        width: Width * 0.62,
                       ),
                       GestureDetector(
                           onTap: () {

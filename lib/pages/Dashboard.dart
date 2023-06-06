@@ -39,6 +39,15 @@ class _DashboardState extends State<Dashboard> with AutomaticKeepAliveClientMixi
     // TODO: implement initState
     super.initState();
     _blochomepage.add(HomePageDataEvent());
+    _blochomepage.stream.listen((state) {
+      if(state is AddedState){
+        WidgetsBinding.instance?.addPostFrameCallback((_) {
+
+          Get.offAll(()=>Homepage(noticount: state.notiount, index:1,));
+          // Use the context here
+        });
+      }
+    });
   }
   @override
   bool get wantKeepAlive => true;

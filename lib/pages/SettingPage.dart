@@ -90,13 +90,11 @@ bool Notificationoff=false;
                           child: Row(
                             children: [
                               Image(image: NetworkImage('https://img.icons8.com/?size=512&id=15042&format=png',scale: 20)),
-                            Padding(
-                           padding: const EdgeInsets.fromLTRB(0.0  , 0.0 , 200, 0.0),
-                          child: Text(
-                            'Edit Profile',
-                             style: TextStyle(fontSize: 20, color: Colors.black, fontFamily: 'MonoRoboto'),
-                           ),
-                            ),
+                            Text(
+                              'Edit Profile',
+                               style: TextStyle(fontSize: 20, color: Colors.black, fontFamily: 'MonoRoboto'),
+                             ),
+                              SizedBox(width: Width*0.46,),
                               Icon(Icons.arrow_forward_ios_rounded,color: Colors.black,),
                             ],
                           ),
@@ -111,13 +109,12 @@ bool Notificationoff=false;
                         child: Row(
                           children: [
                             Image(image: NetworkImage('https://img.icons8.com/?size=512&id=eMfeVHKyTnkc&format=png',scale: 20)),
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(0.0  , 0.0 , 160, 0.0),
-                              child: Text(
-                                'Notification',
-                                style: TextStyle(fontSize: 20, color: Colors.black, fontFamily: 'MonoRoboto'),
-                              ),
+
+                            Text(
+                              'Notification',
+                              style: TextStyle(fontSize: 20, color: Colors.black, fontFamily: 'MonoRoboto'),
                             ),
+                            SizedBox(width: Width*0.35,),
                             Switch(
                               // thumb color (round icon)
                               activeColor: Colors.white,
@@ -146,13 +143,11 @@ bool Notificationoff=false;
                           child: Row(
                             children: [
                               Image(image: NetworkImage('https://img.icons8.com/?size=512&id=82747&format=png',scale: 20)),
-                              Padding(
-                                padding: const EdgeInsets.fromLTRB(0.0  , 0.0 , 135, 0.0),
-                                child: Text(
-                                  'Change Password',
-                                  style: TextStyle(fontSize: 20, color: Colors.black, fontFamily: 'MonoRoboto'),
-                                ),
+                              Text(
+                                'Change Password',
+                                style: TextStyle(fontSize: 20, color: Colors.black, fontFamily: 'MonoRoboto'),
                               ),
+                              SizedBox(width: Width*0.27,),
                               Icon(Icons.arrow_forward_ios_rounded,color: Colors.black,),
                             ],
                           ),
@@ -172,13 +167,11 @@ bool Notificationoff=false;
                           child: Row(
                             children: [
                               Image(image: NetworkImage('https://img.icons8.com/?size=512&id=HJMT3crrSiU0&format=png',scale: 20)),
-                              Padding(
-                                padding: const EdgeInsets.fromLTRB(0.0  , 0.0 , 245, 0.0),
-                                child: Text(
-                                  'About',
-                                  style: TextStyle(fontSize: 20, color: Colors.black, fontFamily: 'MonoRoboto'),
-                                ),
+                              Text(
+                                'About',
+                                style: TextStyle(fontSize: 20, color: Colors.black, fontFamily: 'MonoRoboto'),
                               ),
+                              SizedBox(width: Width*0.56,),
                               Icon(Icons.arrow_forward_ios_rounded,color: Colors.black,),
                             ],
                           ),
@@ -198,13 +191,11 @@ bool Notificationoff=false;
                           child: Row(
                             children: [
                               Image(image: NetworkImage('https://img.icons8.com/?size=1x&id=646&format=png',scale: 20)),
-                              Padding(
-                                padding: const EdgeInsets.fromLTRB(0.0  , 0.0 , 280, 0.0),
-                                child: Text(
-                                  'Help',
-                                  style: TextStyle(fontSize: 20, color: Colors.black, fontFamily: 'MonoRoboto'),
-                                ),
+                              Text(
+                                'Help',
+                                style: TextStyle(fontSize: 20, color: Colors.black, fontFamily: 'MonoRoboto'),
                               ),
+                              SizedBox(width: Width*0.66,),
                               Icon(Icons.arrow_forward_ios_rounded,color: Colors.black,),
                             ],
                           ),

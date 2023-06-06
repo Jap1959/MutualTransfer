@@ -1,19 +1,11 @@
-import 'package:connect2prof/authentication/auth.dart';
-import 'package:connect2prof/bloc/ChatPageBLoc.dart';
+
 import 'package:connect2prof/databaseservices/AddchatRoomDetails.dart';
-import 'package:connect2prof/databaseservices/GetChatData.dart';
 import 'package:connect2prof/databaseservices/LifeCycle.dart';
-import 'package:connect2prof/pages/DetailsPage.dart';
 import 'package:connect2prof/pages/Homepage.dart';
 import 'package:connect2prof/pages/Loginpage.dart';
-import 'package:connect2prof/pages/WelcomeScreen.dart';
-import 'package:connect2prof/pages/pageloading.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-
 import '../bloc/SplashScreenBloc.dart';
 import '../bloc/events.dart';
 import '../bloc/statesofapp.dart';
@@ -36,8 +28,8 @@ class _SplashScreenState extends State<SplashScreen> {
     _blocusage = BlocProvider.of<Blocusage>(context);
     _blocusage.add(Userauthenticationevent());
     AddchatDetails _add = AddchatDetails();
-    _add.AddStatus('true');
-    WidgetsBinding.instance?.addObserver(AppLifecycleObserver());
+     _add.AddStatus('true');
+    WidgetsBinding.instance.addObserver(AppLifecycleObserver());
   }
 
   @override
@@ -47,14 +39,9 @@ class _SplashScreenState extends State<SplashScreen> {
 
     return BlocBuilder<Blocusage, AppStates>(builder: (context, state) {
       if (state is Pageloading) {
-        return Container(
-          width: 150,
-          height: 150,
-          decoration: BoxDecoration(
-            color: Colors.grey[350],
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Center(
+        return Scaffold(
+         backgroundColor: Colors.white,
+          body: Center(
             child: CircularProgressIndicator(
               color: Colors.white,
             ),
@@ -73,7 +60,9 @@ class _SplashScreenState extends State<SplashScreen> {
       return Container(
         height: Height,
         width: Width,
-        color: Colors.white,
+        decoration:const BoxDecoration(
+          image: DecorationImage(image: AssetImage('assets/images/mtf-logo.png')),
+        ),
       );
     });
   }

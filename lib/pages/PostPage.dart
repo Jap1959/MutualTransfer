@@ -24,6 +24,7 @@ import '../bloc/PostPageBLoc.dart';
 import '../bloc/ChatPageBLoc.dart';
 import '../bloc/statesofapp.dart';
 import '../usermodel/usermodel.dart';
+import 'Homepage.dart';
 
 class PostPage extends StatefulWidget {
   PostPage(this.Mobile,this.Name,this.Url);
@@ -44,6 +45,20 @@ class _PostPageState extends State<PostPage> {
   final TextEditingController Name=TextEditingController();
   BlocPostAdd _blocAddPost=BlocPostAdd();
 
+   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _blocAddPost.stream.listen((state) {
+      if(state is AddedState){
+        WidgetsBinding.instance?.addPostFrameCallback((_) {
+
+          Get.offAll(()=>Homepage(noticount: state.notiount, index:0,));
+          // Use the context here
+        });
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,6 +66,9 @@ class _PostPageState extends State<PostPage> {
     final Width=MediaQuery.of(context).size.width;
     return BlocBuilder<BlocPostAdd,AppStates>(bloc: _blocAddPost, builder: (context,state)
      {
+       if(state is LoginSucessState){
+
+       }
          return Scaffold(
            backgroundColor: kPrimary,
            appBar: AppBar(

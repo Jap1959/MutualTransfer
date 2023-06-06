@@ -1,12 +1,9 @@
 
   import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:connect2prof/usermodel/NotificationDatamodel.dart';
 import 'package:connect2prof/usermodel/Notificationgetdatamodel.dart';
-import 'package:connect2prof/usermodel/PostUploadDatamodel.dart';
   import 'package:connect2prof/usermodel/PostdataModel.dart';
   import 'package:connect2prof/usermodel/usermodel.dart';
   import 'package:firebase_auth/firebase_auth.dart';
-  import 'package:flutter/cupertino.dart';
 
   class GetData{
 
@@ -104,7 +101,7 @@ import 'package:connect2prof/usermodel/PostUploadDatamodel.dart';
       CollectionReference noti = FirebaseFirestore.instance.collection('Notification');
       List<NotificationGetDatamodel> data = [];
       try {
-        QuerySnapshot snapshot = await noti.get();
+        QuerySnapshot snapshot = await noti.orderBy('Time',descending: true).get();
         List<Future<void>> futures = [];
 
         for (DocumentSnapshot doc in snapshot.docs) {

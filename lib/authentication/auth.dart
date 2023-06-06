@@ -63,9 +63,14 @@ class Authentication {
         email: email,
         password: password,
       );
-      return userCredential.user;
+      return 'true';
+    } on FirebaseAuthException catch (e) {
+      print('Firebase Authentication Exception: ${e.code} - ${e.message}');
+      // Handle specific authentication error codes
+      return e.code;
     } catch (e) {
-      return e.toString();
+      print('Unknown error: $e');
+      // Handle other unknown exceptions
     }
   }
 

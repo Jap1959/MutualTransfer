@@ -1,19 +1,13 @@
 
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:connect2prof/UsersData/UsersData.dart';
-import 'package:connect2prof/databaseservices/GetData.dart';
 import 'package:connect2prof/usermodel/MessageDatamodel.dart';
 import 'package:connect2prof/usermodel/NotificationDatamodel.dart';
 import 'package:connect2prof/usermodel/PostdataModel.dart';
-import 'package:connect2prof/variables.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../pages/Homepage.dart';
 import '../usermodel/PostUploadDatamodel.dart';
 
@@ -29,11 +23,6 @@ class AddData {
       prefs.setString('Name', Data['Name']);
       prefs.setString('Mobile', Data['Mobile_no']);
       await users.doc(uid).set(Data);
-      int? noticount = prefs.getInt('Notification');
-      Get.off(() => Homepage(
-            noticount: noticount!,
-            index: 0,
-          ));
     } catch (e) {
       print(e.toString());
     }
@@ -59,11 +48,6 @@ class AddData {
           Date: date.toString(),
           Time: now.toString());
       await post.add(PostFinal?.toMap());
-      int? noticount = prefs.getInt('Notification');
-      Get.off(() => Homepage(
-            noticount: noticount!,
-            index: 0,
-          ));
     } catch (e) {
       print(e.toString());
     }
@@ -104,9 +88,6 @@ class AddData {
       List<QueryDocumentSnapshot> documents = querySnapshot.docs;
       List<String> documentIds = documents.map((document) => document.id).toList();
       if(documentIds.contains(Chatid)||documentIds.contains('${recieveruid}_${uid}')){
-        SharedPreferences prefs=await SharedPreferences.getInstance();
-        int? noticount=prefs.getInt('Notification');
-        Get.to(()=>Homepage(noticount: noticount==null?0:noticount, index: 1,));
         return;
       }
         DocumentSnapshot snapshot =
@@ -133,9 +114,6 @@ class AddData {
             .collection('Message')
             .add(message.toMap()));
         await Future.wait(futures);
-      SharedPreferences prefs=await SharedPreferences.getInstance();
-      int? noticount=prefs.getInt('Notification');
-      Get.to(()=>Homepage(noticount: noticount==null?0:noticount, index: 1,));
 
     } catch (e) {
       print(e.toString());

@@ -1,22 +1,15 @@
-import 'package:connect2prof/CustomWidgets/Colors.dart';
 import 'package:connect2prof/bloc/HomepageBloc.dart';
 import 'package:connect2prof/bloc/LoginPageBLoc.dart';
 import 'package:connect2prof/bloc/PostPageBLoc.dart';
 import 'package:connect2prof/bloc/ProfileLoadBloc.dart';
-import 'package:connect2prof/bloc/ChatPageBLoc.dart';
-import 'package:connect2prof/pages/WelcomeScreen.dart';
 import 'package:connect2prof/pages/splashscreen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
 import 'bloc/AdddataBloc.dart';
 import 'bloc/SinupPageBLoc.dart';
 import 'bloc/SplashScreenBloc.dart';
-import 'databaseservices/AddchatRoomDetails.dart';
-import 'databaseservices/LifeCycle.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

@@ -3,9 +3,12 @@
 
 import 'package:connect2prof/bloc/statesofapp.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../databaseservices/Adddata.dart';
+import '../pages/Homepage.dart';
 import 'events.dart';
 
 class BlocPostAdd extends Bloc<AddPostEvent,AppStates>{
@@ -32,6 +35,8 @@ class BlocPostAdd extends Bloc<AddPostEvent,AppStates>{
         _AddData.Addnotification(event!.Post!.PostedByUserid);
         SharedPreferences prefs=await SharedPreferences.getInstance();
         prefs.setInt('Notification', 1);
+        int? noticount = prefs.getInt('Notification');
+        emit(AddedState(noticount==null?0:noticount));
       }
       catch(e){
         print(e.toString());

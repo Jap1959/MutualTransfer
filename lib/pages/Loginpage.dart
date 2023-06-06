@@ -11,6 +11,7 @@ import 'package:connect2prof/pages/DetailsPage.dart';
 import 'package:connect2prof/pages/Homepage.dart';
 import 'package:connect2prof/pages/ResetPasword.dart';
 import 'package:connect2prof/pages/Singuppage.dart';
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -45,6 +46,24 @@ class _LoginPageState extends State<LoginPage> {
     return BlocBuilder<BlocLogin,AppStates>(
       bloc: _bloclogin,
        builder: (context,state) {
+        if(state is LoginSucessState){
+          return Homepage(noticount: state.noticount, index: 0);
+        }
+        if(state is LoginUnsucessfullState){
+          Get.snackbar("Error", state.Error
+              ,icon: Icon(Icons.close,color: Colors.white,),
+              snackPosition: SnackPosition.TOP,
+              backgroundColor: Colors.red
+          );
+        }
+        if(state is LinkSentState){
+          Get.snackbar("Message", "Link Send Sucessfully"
+              ,icon: Icon(Icons.check,color: Colors.white,),
+              snackPosition: SnackPosition.TOP,
+              backgroundColor: Colors.green
+          );
+          Get.offAll(()=>LoginPage());
+        }
          return Scaffold(
            backgroundColor: kPrimary,
            appBar: AppBar(
@@ -108,7 +127,7 @@ class _LoginPageState extends State<LoginPage> {
                        Padding(
                          padding: const EdgeInsets.all(8.0),
                          child: GestureDetector(onTap: () async {
-                           if(Email.text.toString()!=""&&Password.text.toString()!="") {
+                           if(EmailValidator.validate(Email.text.toString())&&Password.text.toString()!="") {
                              _bloclogin.add(LoginPageEvent(
                                  Email.text.toString(),
                                  Password.text.toString()));
