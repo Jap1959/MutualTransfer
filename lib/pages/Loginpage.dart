@@ -4,7 +4,6 @@ import 'package:connect2prof/CustomWidgets/Colors.dart';
 import 'package:connect2prof/CustomWidgets/LoadingButton.dart';
 import 'package:connect2prof/CustomWidgets/TextfieldPassword.dart';
 import 'package:connect2prof/authentication/auth.dart';
-import 'package:connect2prof/bloc/ChatPageBLoc.dart';
 import 'package:connect2prof/bloc/events.dart';
 import 'package:connect2prof/bloc/statesofapp.dart';
 import 'package:connect2prof/pages/DetailsPage.dart';
@@ -12,12 +11,9 @@ import 'package:connect2prof/pages/Homepage.dart';
 import 'package:connect2prof/pages/ResetPasword.dart';
 import 'package:connect2prof/pages/Singuppage.dart';
 import 'package:email_validator/email_validator.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-
 import '../CustomWidgets/Textfield.dart';
 import '../bloc/LoginPageBLoc.dart';
 
@@ -139,7 +135,6 @@ class _LoginPageState extends State<LoginPage> {
                                  backgroundColor: Colors.red
                              );
                            }
-                           print(state);
                            if(state is LoginUnsucessfullState){
                              Get.snackbar("Error", "${state.Error}"
                                  ,icon: Icon(Icons.close,color: Colors.white,),

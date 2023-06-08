@@ -1,32 +1,20 @@
 
 
 
-
-import 'dart:io';
-
 import 'package:connect2prof/CustomWidgets/ButtonAPP.dart';
 import 'package:connect2prof/CustomWidgets/Colors.dart';
 import 'package:connect2prof/CustomWidgets/LoadingButton.dart';
 import 'package:connect2prof/CustomWidgets/Textfield.dart';
-import 'package:connect2prof/bloc/ChatPageBLoc.dart';
-import 'package:connect2prof/databaseservices/StoreImageFile.dart';
 import 'package:connect2prof/pages/Homepage.dart';
 import 'package:connect2prof/usermodel/usermodel.dart';
 import 'package:connect2prof/validation.dart';
-import 'package:equatable/equatable.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../bloc/AdddataBloc.dart';
 import '../bloc/events.dart';
 import '../bloc/statesofapp.dart';
@@ -181,8 +169,6 @@ class _DetailsPageState extends State<DetailsPage> {
                               SharedPreferences prefs=await SharedPreferences.getInstance();
                               prefs.setBool('Seen', true);
                               String? image=prefs.getString('Url');
-
-                              print(image.toString());
                               if(status=='true'){
                                 final uid=FirebaseAuth.instance.currentUser?.uid;
                                 String Time=DateTime.now().millisecondsSinceEpoch.toString();

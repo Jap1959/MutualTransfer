@@ -1,23 +1,15 @@
 
 import 'package:connect2prof/CustomWidgets/PostDesign.dart';
-import 'package:connect2prof/CustomWidgets/Serachbar.dart';
-import 'package:connect2prof/databaseservices/Adddata.dart';
 import 'package:connect2prof/pages/ProfileForOtherUser.dart';
-import 'package:connect2prof/pages/ProfilePage.dart';
 import 'package:connect2prof/pages/SinglePostPage.dart';
-import 'package:connect2prof/pages/chatInterface.dart';
-import 'package:connect2prof/usermodel/PostUploadDatamodel.dart';
 import 'package:connect2prof/usermodel/PostdataModel.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart' ;
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import '../CustomWidgets/Colors.dart';
 import '../bloc/HomepageBloc.dart';
-import '../bloc/ChatPageBLoc.dart';
 import '../bloc/events.dart';
 import '../bloc/statesofapp.dart';
 import 'Homepage.dart';
@@ -41,7 +33,7 @@ class _DashboardState extends State<Dashboard> with AutomaticKeepAliveClientMixi
     _blochomepage.add(HomePageDataEvent());
     _blochomepage.stream.listen((state) {
       if(state is AddedState){
-        WidgetsBinding.instance?.addPostFrameCallback((_) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
 
           Get.offAll(()=>Homepage(noticount: state.notiount, index:1,));
           // Use the context here
@@ -56,7 +48,6 @@ class _DashboardState extends State<Dashboard> with AutomaticKeepAliveClientMixi
   Widget build(BuildContext context) {
     super.build(context);
     final Height = MediaQuery.of(context).size.height;
-    final Width = MediaQuery.of(context).size.width;
 
     return BlocBuilder<BlocHompage, AppStates>(
       bloc: _blochomepage,
@@ -134,16 +125,22 @@ class _DashboardState extends State<Dashboard> with AutomaticKeepAliveClientMixi
                         return ListTile(
                           title: GestureDetector(
                             onTap: () {
-                              Get.to(()=>SinglePostPage(Name: Users[index].Name, Proffesion: Users[index].Proffession, Profilepic: Users[index].Profilepic, CurrentPlace: Users[index].CurrentPlace, Mobile: Users[index].MobileNo, DestinationPlace: Users[index].DestinationPlace, decription: Users[index].description));
+                              Get.to(()=>SinglePostPage(Name: Searchresults[index].Name, Proffesion: Searchresults[index].Proffession, Profilepic: Searchresults[index].Profilepic, CurrentPlace: Searchresults[index].CurrentPlace, Mobile: Searchresults[index].MobileNo, DestinationPlace: Searchresults[index].DestinationPlace, decription: Searchresults[index].description));
                             },
                             child: PostDesign(
                               CurrentPlace: Searchresults[index].CurrentPlace,
                               DestinationPlace: Searchresults[index].DestinationPlace,
                               decription: Searchresults[index].description,
-                              Mobile: Searchresults[index].MobileNo, url: Searchresults[index].Profilepic, Name: Searchresults[index].Name, Proffesion: Searchresults[index].Proffession, onTap: (){
-                              _blochomepage.add(MessageEvent(Users[index].PostedByUserid));
+                              Mobile: Searchresults[index].MobileNo, url: Searchresults[index].Profilepic, Name: Searchresults[index].Name, Proffesion: Searchresults[index].Proffession,
+                              onTap: (){
+                              _blochomepage.add(MessageEvent(Searchresults[index].PostedByUserid));
                             }, ProfileTap: () {
-                                Get.to(()=>ProfileForOther(uid: Searchresults[index].PostedByUserid,Mobile:Users[index].MobileNo));
+                              final uid=FirebaseAuth.instance.currentUser?.uid;
+                              if(uid==Searchresults[index].PostedByUserid){
+                                Get.to(()=>Homepage(noticount: 0, index: 2));
+                              }
+                              else
+                                Get.to(()=>ProfileForOther(uid:Searchresults[index].PostedByUserid,Mobile:Users[index].MobileNo));
                             },
                             ),
                           ),
@@ -158,7 +155,6 @@ class _DashboardState extends State<Dashboard> with AutomaticKeepAliveClientMixi
         }
         else if (state is PageLoadedstate  ) {
           List<PostdataModel> Users = state.Data;
-             print(Users.length);
           return RefreshIndicator(
             onRefresh:()async {
               _blochomepage.add(HomePageDataEvent());
@@ -249,7 +245,7 @@ class _DashboardState extends State<Dashboard> with AutomaticKeepAliveClientMixi
             ),
           );
         }
-        return Container();
+        return SizedBox.shrink();
       },
     );
   }

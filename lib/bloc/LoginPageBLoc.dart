@@ -48,7 +48,6 @@ class BlocLogin extends Bloc<AppEvent,AppStates>{
          emit(ButtonPressedState());
            Authentication _auth=Authentication();
               final String status= await _auth.resetPassword(email: event.Email);
-              // print(status);
 
               if(status=='true'){
                 Authentication _auth=Authentication();

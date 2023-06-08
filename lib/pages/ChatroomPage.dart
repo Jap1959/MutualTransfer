@@ -1,25 +1,12 @@
-import 'dart:async';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connect2prof/CustomWidgets/Textfield.dart';
-import 'package:connect2prof/UsersData/UsersData.dart';
-import 'package:connect2prof/bloc/BlocChatRoomPage.dart';
-import 'package:connect2prof/bloc/events.dart';
 import 'package:connect2prof/databaseservices/AddchatRoomDetails.dart';
 import 'package:connect2prof/databaseservices/GetChatData.dart';
 import 'package:connect2prof/usermodel/MessageDatamodel.dart';
-import 'package:connect2prof/usermodel/usermodel.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:intl/intl.dart';
-
 import '../CustomWidgets/Colors.dart';
-import '../bloc/statesofapp.dart';
-
 class ChatRoomPage extends StatefulWidget {
   ChatRoomPage(
       {required this.Proffesion,
@@ -39,9 +26,6 @@ class ChatRoomPage extends StatefulWidget {
 class _ChatRoomPageState extends State<ChatRoomPage> {
   late TextEditingController messagecontroller;
   late FocusNode _messageFocusNode;
-  List<MessageDatamodel> _list=[];
-
-  GetChatData _chat = GetChatData();
   @override
   void initState() {
     super.initState();
@@ -57,7 +41,6 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
 
   @override
   Widget build(BuildContext context) {
-    final Height = MediaQuery.of(context).size.height;
     final Width = MediaQuery.of(context).size.width;
     return Scaffold(
         backgroundColor: Colors.white,
@@ -80,7 +63,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                 }
                 final userData = snapshot.data?.data();
                 DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(int.parse(userData!['Lastseen']));
-                final Tag=_chat.formatTimestamp(int.parse(userData!['Lastseen']));
+                final Tag=_chat.formatTimestamp(int.parse(userData['Lastseen']));
                 final Lastseen = DateFormat('h:mm a').format(dateTime);
               return Row(
                 children: [
@@ -88,7 +71,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                     radius: 20,
                     backgroundColor: Colors.grey[100],
                     backgroundImage: NetworkImage(
-                        userData!['Profilepic']),
+                        userData['Profilepic']),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(15.0),
@@ -97,7 +80,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          userData!['Name'],
+                          userData['Name'],
                           style: TextStyle(
                               fontSize: 20,
                               color: Colors.white,

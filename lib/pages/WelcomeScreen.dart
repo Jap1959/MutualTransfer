@@ -2,13 +2,9 @@
 
 
 import 'package:connect2prof/CustomWidgets/ButtonAPP.dart';
-import 'package:connect2prof/CustomWidgets/Colors.dart';
 import 'package:connect2prof/pages/Loginpage.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-
 import '../CustomWidgets/TextDesign.dart';
 
 class WelcomeScrenn extends StatefulWidget {

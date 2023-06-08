@@ -18,7 +18,6 @@ class UpdateData{
       'Proffession':Data['Proffession'],
       // Add more fields to update and their new values
     }).then((value) {
-      print('Document updated successfully.');
     }).catchError((error) {
       print('Failed to update document: $error');
     });

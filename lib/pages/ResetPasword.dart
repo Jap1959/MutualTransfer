@@ -3,20 +3,12 @@
 
 import 'package:connect2prof/CustomWidgets/ButtonAPP.dart';
 import 'package:connect2prof/CustomWidgets/Colors.dart';
-import 'package:connect2prof/CustomWidgets/NotificationTiles.dart';
 import 'package:connect2prof/CustomWidgets/Textfield.dart';
 import 'package:connect2prof/bloc/LoginPageBLoc.dart';
-import 'package:connect2prof/bloc/NotificationBLoc.dart';
-import 'package:connect2prof/pages/Homepage.dart';
-import 'package:connect2prof/usermodel/Notificationgetdatamodel.dart';
 import 'package:email_validator/email_validator.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
 import '../CustomWidgets/LoadingButton.dart';
 import '../bloc/events.dart';
 import '../bloc/statesofapp.dart';

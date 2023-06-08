@@ -6,13 +6,10 @@ import 'package:connect2prof/CustomWidgets/NotificationTiles.dart';
 import 'package:connect2prof/bloc/NotificationBLoc.dart';
 import 'package:connect2prof/pages/Homepage.dart';
 import 'package:connect2prof/usermodel/Notificationgetdatamodel.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../bloc/events.dart';
 import '../bloc/statesofapp.dart';
 
@@ -152,7 +149,7 @@ class _NotificationPageState extends State<NotificationPage> {
               ),
             );
           }
-         return Container();
+         return SizedBox.shrink();
         });
   }
 }

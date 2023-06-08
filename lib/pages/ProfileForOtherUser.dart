@@ -4,12 +4,10 @@
 import 'package:connect2prof/CustomWidgets/PostdesignProfile.dart';
 import 'package:connect2prof/bloc/events.dart';
 import 'package:connect2prof/usermodel/usermodel.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../CustomWidgets/Colors.dart';
 import '../bloc/ProfileLoadBloc.dart';
@@ -35,7 +33,7 @@ class _ProfileForOtherState extends State<ProfileForOther> {
     _profile.add(ProfilePageEvent(widget.uid.toString()));
     _profile.stream.listen((state) {
       if(state is AddedState){
-        WidgetsBinding.instance?.addPostFrameCallback((_) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
 
           Get.to(()=>Homepage(noticount: state.notiount, index:1,));
           // Use the context here

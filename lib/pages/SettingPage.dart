@@ -1,13 +1,8 @@
 import 'package:connect2prof/CustomWidgets/ButtonAPP.dart';
 import 'package:connect2prof/CustomWidgets/Colors.dart';
-import 'package:connect2prof/pages/WelcomeScreen.dart';
-import 'package:cupertino_icons/cupertino_icons.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-
 import '../authentication/auth.dart';
 import '../databaseservices/GetData.dart';
 import 'Loginpage.dart';
@@ -79,7 +74,6 @@ bool Notificationoff=false;
                         GetData _getdata=GetData();
                         final uid=FirebaseAuth.instance.currentUser?.uid;
                         final user=await _getdata.Currentuser(uid.toString());
-                        print(user);
                         Get.to(()=>ProfileEditPage(Name: user.Name, Mobile:user.Mobile_no, url:user.Profilepic, Email: user.Email, City: user.currentplace));
                       },
                       child: Padding(

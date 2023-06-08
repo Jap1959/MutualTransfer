@@ -10,7 +10,6 @@ class GetChatData {
     DateTime convertedTime = DateTime.fromMillisecondsSinceEpoch(milliseconds);
 
     Duration difference = currentTime.difference(convertedTime);
-    print(milliseconds);
     if (difference.inMinutes < 1) {
       return 'Just now';
     } else if (difference.inMinutes < 60) {
@@ -42,7 +41,6 @@ class GetChatData {
       for (DocumentSnapshot doc in snapshot.docs) {
         String docid = doc.id;
         List<String> parts = docid.split('_');
-        print(parts[0]);
         if (parts[0] != uid) {
           futures.add(FirebaseFirestore.instance
               .collection('Users')
@@ -103,7 +101,6 @@ class GetChatData {
       for (DocumentSnapshot doc in snapshot.docs) {
         String docid = doc.id;
         List<String> parts = docid.split('_');
-        print(parts[0]);
         if (parts[0] != uid) {
           futures.add(FirebaseFirestore.instance
               .collection('Users')

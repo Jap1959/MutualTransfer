@@ -42,9 +42,7 @@ import 'package:connect2prof/usermodel/Notificationgetdatamodel.dart';
           }));
         }
 
-        await Future.wait(futures); // Wait for all the async operations to complete
-
-        print('Number of posts: ${data.length}');
+        await Future.wait(futures);
         return data;
       } catch (e) {
         print(e.toString());
@@ -59,7 +57,6 @@ import 'package:connect2prof/usermodel/Notificationgetdatamodel.dart';
         for (var doc in snapshot.docs) {
           Map<String, dynamic>? docData = doc.data() as Map<String, dynamic>?;
           if (docData != null && docData['PostedByUserid'] == uid.toString()) {
-            print(doc.data());
             PostdataModel Post = PostdataModel(
               DestinationPlace: docData['Destinationplace'],
               Proffession: docData['Proffession'],
@@ -72,7 +69,6 @@ import 'package:connect2prof/usermodel/Notificationgetdatamodel.dart';
               Date: docData['Date'],
               Time: docData['Time'],
             );
-            print(Post);
             data.add(Post);
           }
         }
@@ -120,7 +116,6 @@ import 'package:connect2prof/usermodel/Notificationgetdatamodel.dart';
 
         await Future.wait(futures); // Wait for all the async operations to complete
 
-        print('Number of posts: ${data.length}');
         return data;
       } catch (e) {
         print(e.toString());

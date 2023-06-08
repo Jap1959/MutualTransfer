@@ -1,19 +1,11 @@
 import 'package:connect2prof/CustomWidgets/Colors.dart';
-import 'package:connect2prof/CustomWidgets/PostDesign.dart';
-import 'package:connect2prof/UsersData/UsersData.dart';
-import 'package:connect2prof/bloc/ChatPageBLoc.dart';
-import 'package:connect2prof/bloc/events.dart';
 import 'package:connect2prof/pages/ChatRoom.dart';
-import 'package:connect2prof/pages/ChatroomPage.dart';
 import 'package:connect2prof/pages/Dashboard.dart';
-import 'package:connect2prof/pages/DetailsPage.dart';
 import 'package:connect2prof/pages/Notification.dart';
 import 'package:connect2prof/pages/PostPage.dart';
 import 'package:connect2prof/pages/ProfilePage.dart';
 import 'package:connect2prof/pages/SettingPage.dart';
-import 'package:connect2prof/pages/chatInterface.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -21,7 +13,6 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../databaseservices/GetData.dart';
-import '../variables.dart';
 
 class Homepage extends StatefulWidget {
   Homepage({required this.noticount, required this.index});
@@ -33,25 +24,15 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
-  int _selectedIndex = 0;
 
   final List<Widget> pages = [
     Dashboard(),
     Chatroom(),
     ProfilePage(),
   ];
-
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    print(widget.index);
-     _selectedIndex=widget.index;
-  }
-
   Future<void> _onItemTapped(int index) async {
     setState(() {
       widget.index = index;
-      _selectedIndex = index;
     });
   }
 
@@ -61,7 +42,7 @@ class _HomepageState extends State<Homepage> {
     final Width = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: kPrimary,
-      appBar: _selectedIndex == 1
+      appBar: widget.index == 1
           ? AppBar(
               backgroundColor: Colors.white,
               elevation: 0.0,
@@ -85,7 +66,7 @@ class _HomepageState extends State<Homepage> {
                 ],
               ),
             )
-          : _selectedIndex == 0
+          : widget.index == 0
               ? AppBar(
                   leading: const Padding(
                     padding:  EdgeInsets.fromLTRB(6.0, 15, 0.0, 10),
@@ -169,7 +150,7 @@ class _HomepageState extends State<Homepage> {
           ),
           color: Colors.grey[100],
         ),
-        child: pages[_selectedIndex],
+        child: pages[widget.index],
       ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: kPrimary,
@@ -198,7 +179,7 @@ class _HomepageState extends State<Homepage> {
         ],
         showSelectedLabels: true,
         showUnselectedLabels: false,
-        currentIndex: _selectedIndex, //New
+        currentIndex: widget.index, //New
         onTap: _onItemTapped,
       ),
     );

@@ -18,7 +18,6 @@ class AddData {
     CollectionReference users = FirebaseFirestore.instance.collection('Users');
     try {
       final uid = FirebaseAuth.instance.currentUser?.uid;
-      print(Data);
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setString('Name', Data['Name']);
       prefs.setString('Mobile', Data['Mobile_no']);

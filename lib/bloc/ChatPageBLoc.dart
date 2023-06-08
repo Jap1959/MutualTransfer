@@ -12,7 +12,6 @@ class BlocChatPage extends Bloc<AppEvent, AppStates> {
     DateTime convertedTime = DateTime.fromMillisecondsSinceEpoch(milliseconds);
 
     Duration difference = currentTime.difference(convertedTime);
-    print(milliseconds);
     if (difference.inMinutes < 1) {
       return 'Just now';
     } else if (difference.inMinutes < 60) {
@@ -69,7 +68,6 @@ class BlocChatPage extends Bloc<AppEvent, AppStates> {
           emit(SearchResultStateforchat(user));
         }
         emit(SearchResultStateforchat(results));
-        print(results.length);
       } catch (e) {
         print(e.toString());
       }

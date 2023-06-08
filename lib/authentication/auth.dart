@@ -34,7 +34,6 @@ class Authentication {
       );
       return userCredential.user;
     } catch (e) {
-      print('Registration error: $e');
       if(e.toString()=='[firebase_auth/email-already-in-use] The email address is already in use by another account.') {
         Get.snackbar(
           "Error", "Email already in use",
@@ -65,7 +64,6 @@ class Authentication {
       );
       return 'true';
     } on FirebaseAuthException catch (e) {
-      print('Firebase Authentication Exception: ${e.code} - ${e.message}');
       // Handle specific authentication error codes
       return e.code;
     } catch (e) {
@@ -78,7 +76,6 @@ class Authentication {
     await _firebaseAuth.signOut();
   }
   Future<String> resetPassword({required String email}) async {
-    print(email);
     String _Status='false';
     await _firebaseAuth
         .sendPasswordResetEmail(email: email)

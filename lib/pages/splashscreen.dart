@@ -3,7 +3,6 @@ import 'package:connect2prof/databaseservices/AddchatRoomDetails.dart';
 import 'package:connect2prof/databaseservices/LifeCycle.dart';
 import 'package:connect2prof/pages/Homepage.dart';
 import 'package:connect2prof/pages/Loginpage.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../bloc/SplashScreenBloc.dart';
@@ -34,9 +33,6 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final Height = MediaQuery.of(context).size.height;
-    final Width = MediaQuery.of(context).size.width;
-
     return BlocBuilder<Blocusage, AppStates>(builder: (context, state) {
       if (state is Pageloading) {
         return Scaffold(
@@ -57,13 +53,7 @@ class _SplashScreenState extends State<SplashScreen> {
       if (state is UserlogoutSate) {
         return LoginPage();
       }
-      return Container(
-        height: Height,
-        width: Width,
-        decoration:const BoxDecoration(
-          image: DecorationImage(image: AssetImage('assets/images/mtf-logo.png')),
-        ),
-      );
+      return SizedBox.shrink();
     });
   }
 }

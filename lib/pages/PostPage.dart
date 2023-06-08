@@ -1,6 +1,3 @@
-
-
-
 import 'package:connect2prof/CustomWidgets/ButtonAPP.dart';
 import 'package:connect2prof/CustomWidgets/Colors.dart';
 import 'package:connect2prof/CustomWidgets/LoadingButton.dart';
@@ -8,22 +5,14 @@ import 'package:connect2prof/CustomWidgets/Textfield.dart';
 import 'package:connect2prof/CustomWidgets/TextfieldArea.dart';
 import 'package:connect2prof/bloc/events.dart';
 import 'package:connect2prof/usermodel/PostUploadDatamodel.dart';
-import 'package:connect2prof/usermodel/PostdataModel.dart';
 import 'package:connect2prof/validation.dart';
-import 'package:connect2prof/variables.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
 import '../bloc/PostPageBLoc.dart';
-import '../bloc/ChatPageBLoc.dart';
 import '../bloc/statesofapp.dart';
-import '../usermodel/usermodel.dart';
 import 'Homepage.dart';
 
 class PostPage extends StatefulWidget {
@@ -51,7 +40,7 @@ class _PostPageState extends State<PostPage> {
     super.initState();
     _blocAddPost.stream.listen((state) {
       if(state is AddedState){
-        WidgetsBinding.instance?.addPostFrameCallback((_) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
 
           Get.offAll(()=>Homepage(noticount: state.notiount, index:0,));
           // Use the context here
@@ -160,10 +149,8 @@ class _PostPageState extends State<PostPage> {
                                    signed: true, decimal: true),
                                inputBorder: OutlineInputBorder(),
                                onSaved: (PhoneNumber number) {
-                                 print('On Saved: $number');
                                },
                                onInputChanged: (PhoneNumber value) {
-                                 print('------------------------------>$value');
                                },
                              ),
                            ),

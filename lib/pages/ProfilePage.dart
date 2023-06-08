@@ -4,11 +4,9 @@ import 'package:connect2prof/bloc/events.dart';
 import 'package:connect2prof/pages/ProfileEditPage.dart';
 import 'package:connect2prof/usermodel/usermodel.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import '../CustomWidgets/Colors.dart';
 import '../bloc/ProfileLoadBloc.dart';
 import '../bloc/statesofapp.dart';
@@ -95,7 +93,6 @@ class _ProfilePageState extends State<ProfilePage> {
                                         GetData _getdata = GetData();
                                         final uid=FirebaseAuth.instance.currentUser?.uid;
                                         final user = await _getdata.Currentuser(uid.toString());
-                                        print(user);
                                         Get.to(() =>
                                             ProfileEditPage(Name: user.Name,
                                                 Mobile: user.Mobile_no,
@@ -203,7 +200,7 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
           );
         }
-        return Container();
+        return SizedBox.shrink();
       },
     );
   }

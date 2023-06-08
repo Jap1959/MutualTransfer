@@ -1,16 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connect2prof/CustomWidgets/Colors.dart';
 import 'package:connect2prof/databaseservices/GetChatData.dart';
-import 'package:connect2prof/pages/chatInterface.dart';
-import 'package:connect2prof/usermodel/usermodel.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:intl/intl.dart';
-
-import '../authentication/auth.dart';
 import 'ChatroomPage.dart';
 String _searchQuery = '';
 class Chatroom extends StatefulWidget {
@@ -71,7 +67,6 @@ class _ChatroomState extends State<Chatroom> {
                    setState(() {
                      _searchQuery=value;
                    });
-                  print(value);
                 },
               ),
             ),
@@ -114,14 +109,11 @@ class _ChatroomState extends State<Chatroom> {
                 return userList.length==0?Center(child: Text('No Results'),):ListView.builder(
                   itemCount: userList.length,
                   itemBuilder: (BuildContext context, int index) {
-                    print(userList[index]);
                     List<String> Parts = userList[index].split('_');
                     String userid;
                     if (Parts[0] != uid) {
-                      print(Parts[0]);
                       userid = Parts[0];
                     } else {
-                      print(Parts[1]);
                       userid = Parts[1];
                     }
                     return StreamBuilder<
@@ -253,7 +245,7 @@ class _ChatroomState extends State<Chatroom> {
                             ),
                           );
                         }
-                        return SizedBox();
+                        return SizedBox.shrink();
                       },
                     );
                   },
