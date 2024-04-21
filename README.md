@@ -1,10 +1,10 @@
-**Mutual Transfer Flutter Application**
+# Mutual Transfer Flutter Application
 
-**Overview**
+## Overview
 
 The Mutual Transfer Flutter Application is designed to facilitate workplace exchanges among government employees based on their preferences. The app provides a seamless platform for users to post their requirements and communicate with each other securely.
 
-**Features**
+### Features
 
 **User Authentication:** Utilizes Firebase Authentication service for secure user authentication.
 
@@ -19,7 +19,7 @@ The Mutual Transfer Flutter Application is designed to facilitate workplace exch
 **Chat Functionality:** Facilitates communication between users through a secure chat feature, enabling negotiation and agreement on mutual workplace exchanges.
 
 
-**Technologies Used**
+### Technologies Used
 
 **Flutter:** Cross-platform framework for building native mobile applications.
 
@@ -29,7 +29,7 @@ The Mutual Transfer Flutter Application is designed to facilitate workplace exch
 
 **Dart:** Programming language used for developing Flutter applications.
 
-**Getting Started**
+### Getting Started
 
 **Clone the repository:** `git clone` 
 
